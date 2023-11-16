@@ -1,10 +1,11 @@
-import ColorToggleButton from "../components/ToggleButton";
-import KakaoMap from "../components/KaKaoMap";
 import { Container, Box } from "@mui/material";
-import StationBox from "../components/StationBox";
-import { Station } from "../@types/maps";
 
-export default function MapPage() {
+import { Station } from "../../@types/maps";
+import ColorToggleButton from "../../components/ToggleButton";
+import KakaoMap from "../../components/KaKaoMap";
+import StationBox from "../../components/StationBox";
+
+function Map() {
   const stations: Station[] = [
     {
       title: "강남역",
@@ -35,3 +36,5 @@ export default function MapPage() {
     </>
   );
 }
+
+export default Map;

@@ -1,8 +1,7 @@
 import Box from "@mui/material/Box";
-import { Station } from "../@types/maps";
-import { Container } from "@mui/material";
+import { Station } from "../../@types/maps";
 
-export default function StationBox({ title, location, time, price }: Station) {
+function StationBox({ title, location, time, price }: Station) {
   console.log("title: " + title);
   return (
     <>
@@ -13,3 +12,5 @@ export default function StationBox({ title, location, time, price }: Station) {
     </>
   );
 }
+
+export default StationBox;

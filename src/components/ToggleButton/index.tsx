@@ -2,7 +2,7 @@ import * as React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-export default function ColorToggleButton() {
+function ColorToggleButton() {
   const values = ["전세", "월세", "매매"];
   const [alignment, setAlignment] = React.useState(values[0]);
 
@@ -11,16 +11,14 @@ export default function ColorToggleButton() {
   };
 
   return (
-    <ToggleButtonGroup
-      color="primary"
-      value={alignment}
-      exclusive
-      onChange={handleChange}
-      aria-label="Platform"
-    >
-      {values.map((value, idx) => (
-        <ToggleButton value={value}>{value}</ToggleButton>
+    <ToggleButtonGroup color="primary" value={alignment} exclusive onChange={handleChange} aria-label="Platform">
+      {values.map((value, idx: number) => (
+        <ToggleButton key={idx} value={value}>
+          {value}
+        </ToggleButton>
       ))}
     </ToggleButtonGroup>
   );
 }
+
+export default ColorToggleButton;

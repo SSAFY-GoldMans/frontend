@@ -1,7 +1,7 @@
-import SearchAppBar from "../components/SearchBarField/SearchBar";
+import SearchAppBar from "../../components/SearchBarField/SearchBar";
 import { Container } from "@mui/material";
 
-export default function HomePage() {
+function Main() {
   return (
     <>
       <Container>
@@ -10,3 +10,5 @@ export default function HomePage() {
     </>
   );
 }
+
+export default Main;
