@@ -1,5 +1,17 @@
 import styled from "@emotion/styled";
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-export { Container };
+  flex-direction: column;
+`
+
+const Header = styled.h2`
+  font-size: 24px;
+`
+
+
+
+export { Container, Header };
