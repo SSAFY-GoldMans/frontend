@@ -1,8 +1,4 @@
-import { 
-    Main, 
-    Map, 
-    NotFount 
-} from "../pages/Pages";
+import { Main, Map, NotFount } from "../pages/Pages";
 
 import { Route, Routes as BrowserRoutes } from "react-router-dom";
 
