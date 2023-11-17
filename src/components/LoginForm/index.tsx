@@ -1,18 +1,58 @@
+import { useState } from 'react';
+
 import { BROWSER_PATH } from '@/constants/path';
+import { MemberLoginRequest } from '@/@types/member';
+import { requestLogin } from '@/apis/request/member';
 
 import * as S from './index.styled';
 
 function LoginForm() {
+  const [info, setInfo] = useState<MemberLoginRequest>({
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setInfo(prevInfo => ({
+      ...prevInfo,
+      [name]: value,
+    }));
+  };
+
+  const login = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    requestLogin(info)
+      .then(response => {
+        alert(response.data);
+        history.back();
+      })
+      .catch(error => {
+        console.log('Login Failed');
+      });
+  };
+
   return (
     <S.Container>
-      <S.LoginForm>
+      <S.LoginForm onSubmit={login}>
         <S.Label>
           이메일
-          <S.Input />
+          <S.Input
+            type="text"
+            name="email"
+            value={info.email}
+            onChange={handleInputChange}
+          />
         </S.Label>
         <S.Label>
           비밀번호
-          <S.Input />
+          <S.Input
+            type="password"
+            name="password"
+            value={info.password}
+            onChange={handleInputChange}
+          />
         </S.Label>
         <S.Button type={'submit'}>로그인</S.Button>
         <S.Comment>
