@@ -1,11 +1,14 @@
 import { axios } from '@/apis/axios';
 import { API_PATH } from '@/constants/path';
-
 import { ApiResponse } from '@/@types/global';
-import { MemberLoginRequest, MemberLoginResponse } from '@/@types/member';
+import { MemberLoginRequest, MemberSignupRequest } from '@/@types/member';
 
 const requestLogin = (request: MemberLoginRequest) => {
   return axios.post<ApiResponse<number>>(API_PATH.MEMBER.LOGIN, request);
 };
 
-export { requestLogin };
+const requestSignup = (request: MemberSignupRequest) => {
+  return axios.post<ApiResponse<any>>(API_PATH.MEMBER.SIGNUP, request);
+};
+
+export { requestLogin, requestSignup };

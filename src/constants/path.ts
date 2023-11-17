@@ -1,6 +1,7 @@
 const API_PATH = {
   MEMBER: {
     LOGIN: '/api/member/login',
+    SIGNUP: '/api/member/signup',
   },
 };
 
