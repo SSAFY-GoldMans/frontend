@@ -3,7 +3,7 @@ import Lottie from 'lottie-react';
 import train from '@/assets/lottie/train.json';
 
 const style = {
-  width: '350px',
+  width: '400px',
 };
 
 function TrainAnimation() {

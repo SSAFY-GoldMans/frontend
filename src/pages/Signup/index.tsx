@@ -6,6 +6,9 @@ import { requestSignup } from '@/apis/request/member';
 import { BROWSER_PATH } from '@/constants/path';
 import { ROLE } from '@/constants/member';
 
+import Switch from '@mui/material/Switch';
+import TrainAnimation from '@/components/Animation/Train';
+
 import * as S from './index.styled';
 
 function Signup() {
@@ -27,7 +30,17 @@ function Signup() {
     }));
   };
 
-  useEffect(() => {}, [info.phone]);
+  const [roleChecked, setRoleChecked] = useState(true);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRoleChecked(event.target.checked);
+  };
+
+  useEffect(() => {
+    info.role === ROLE.USER
+      ? (info.role = ROLE.AGENT)
+      : (info.role = ROLE.USER);
+  }, [roleChecked]);
 
   const signup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,11 +95,31 @@ function Signup() {
           />
         </S.Label>
         <S.Button type={'submit'}>회원가입</S.Button>
-        <S.Comment>
-          이미 회원이 아니신가요?
+        <S.Comment color={'gray'}>
+          이미 회원이신가요?
           <S.StyledLink to={BROWSER_PATH.LOGIN}>로그인</S.StyledLink>
         </S.Comment>
       </S.LoginForm>
+      <S.RightWrapper>
+        {info.role === ROLE.USER ? (
+          <S.Header>당신의 집을 찾아보세요!</S.Header>
+        ) : (
+          <S.Header>당신의 매물을 올려보세요!</S.Header>
+        )}
+        <TrainAnimation />
+        <S.ToggleWrapper>
+          {info.role === ROLE.USER ? (
+            <S.Comment color={'gray'}>혹시 중개업자 이신가요?</S.Comment>
+          ) : (
+            <S.Comment color={'blue'}>혹시 일반회원 이신가요?</S.Comment>
+          )}
+          <Switch
+            checked={roleChecked}
+            onChange={handleChange}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+        </S.ToggleWrapper>
+      </S.RightWrapper>
     </S.Container>
   );
 }

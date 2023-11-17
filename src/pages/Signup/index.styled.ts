@@ -1,17 +1,20 @@
+import { ROLE } from '@/constants/member';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 
-  flex-direction: column;
   height: 100vh;
 `;
 
 const Header = styled.h2`
-  font-size: 24px;
+  font-size: 36px;
+
+  margin-bottom: -90px;
 `;
 
 const LoginForm = styled.form`
@@ -64,11 +67,9 @@ const Button = styled.button`
   border-radius: 10px;
 `;
 
-const Comment = styled.p`
+const Comment = styled.p<{ color: string }>`
   font-size: 16px;
-  color: gray;
-
-  margin-top: 30px;
+  color: ${props => props.color};
 `;
 
 const StyledLink = styled(Link)`
@@ -83,6 +84,20 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const RightWrapper = styled.div`
+  justify-content: end;
+  height: 550px;
+
+  margin-left: 100px;
+`;
+
+const ToggleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+`;
+
 export {
   Container,
   Header,
@@ -92,4 +107,6 @@ export {
   Button,
   Comment,
   StyledLink,
+  RightWrapper,
+  ToggleWrapper,
 };
