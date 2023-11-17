@@ -1,1 +1,1 @@
-export { default as HouseAnimation } from "./House";
+export { default as HouseAnimation } from './House';

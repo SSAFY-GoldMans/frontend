@@ -14,7 +14,7 @@ const LoginForm = styled.form`
   border: 1px solid #0f0f0f50;
   border-radius: 10px;
   box-shadow: 2px 2px 2px #0f0f0f25;
-`
+`;
 
 const Input = styled.input`
   width: 350px;
@@ -51,15 +51,14 @@ const Button = styled.button`
   color: #f8f8f8;
 
   border-radius: 10px;
-`
-
+`;
 
 const Comment = styled.p`
   font-size: 16px;
   color: gray;
 
   margin-top: 30px;
-`
+`;
 
 const StyledLink = styled(Link)`
   margin-left: 10px;
@@ -71,6 +70,6 @@ const StyledLink = styled(Link)`
   &:hover {
     color: black;
   }
-`
+`;
 
-export { Container, LoginForm, Input, Label, Button, Comment, StyledLink  };
+export { Container, LoginForm, Input, Label, Button, Comment, StyledLink };

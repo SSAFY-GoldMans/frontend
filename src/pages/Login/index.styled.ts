@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 const Container = styled.div`
   display: flex;
@@ -6,13 +6,10 @@ const Container = styled.div`
   align-items: center;
 
   flex-direction: column;
-`
+`;
 
 const Header = styled.h2`
   font-size: 24px;
-`
-
-
-
+`;
 
 export { Container, Header };

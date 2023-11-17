@@ -1,8 +1,8 @@
-import { Login, Main, Map, NotFount, Signup } from "@/pages/Pages";
+import { Login, Main, Map, NotFount, Signup } from '@/pages/Pages';
 
-import { Route, Routes as BrowserRoutes } from "react-router-dom";
+import { Route, Routes as BrowserRoutes } from 'react-router-dom';
 
-import { BROWSER_PATH } from "@/constants/path";
+import { BROWSER_PATH } from '@/constants/path';
 
 function Routes() {
   return (
@@ -11,7 +11,7 @@ function Routes() {
       <Route path={BROWSER_PATH.BASE} element={<Main />} />
       <Route path={BROWSER_PATH.MAP} element={<Map />} />
       <Route path={BROWSER_PATH.SIGNUP} element={<Signup />} />
-      <Route path={"*"} element={<NotFount />} />
+      <Route path={'*'} element={<NotFount />} />
     </BrowserRoutes>
   );
 }

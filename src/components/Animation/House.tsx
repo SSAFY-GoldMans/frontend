@@ -1,9 +1,9 @@
-import Lottie from "lottie-react";
+import Lottie from 'lottie-react';
 
-import house from "@/assets/lottie/house.json";
+import house from '@/assets/lottie/house.json';
 
 const style = {
-  width: "350px",
+  width: '350px',
 };
 
 function House() {
