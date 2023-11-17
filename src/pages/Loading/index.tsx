@@ -1,5 +1,13 @@
+import LoadingAnimation from '@/components/Animation/Loading';
+
+import * as S from './index.styled';
+
 function Loading() {
-  return <div>Loading</div>;
+  return (
+    <S.Container>
+      <LoadingAnimation />
+    </S.Container>
+  );
 }
 
 export default Loading;
