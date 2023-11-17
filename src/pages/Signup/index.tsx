@@ -30,7 +30,7 @@ function Signup() {
     }));
   };
 
-  const [roleChecked, setRoleChecked] = useState(true);
+  const [roleChecked, setRoleChecked] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRoleChecked(event.target.checked);
