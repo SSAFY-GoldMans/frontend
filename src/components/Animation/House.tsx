@@ -3,7 +3,7 @@ import Lottie from "lottie-react";
 import house from "@/assets/lottie/house.json";
 
 const style = {
-  width: "400px",
+  width: "350px",
 };
 
 function House() {
