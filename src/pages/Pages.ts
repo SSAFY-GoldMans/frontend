@@ -1,7 +1,9 @@
-import { lazy } from "react";
+import { lazy } from 'react';
 
-const Main = lazy(() => import("./Main"));
-const Map = lazy(() => import("./Map"));
-const NotFount = lazy(() => import("./NotFound"));
+const Login = lazy(() => import('./Login'));
+const Main = lazy(() => import('./Main'));
+const Map = lazy(() => import('./Map'));
+const NotFount = lazy(() => import('./NotFound'));
+const Signup = lazy(() => import('./Signup'));
 
-export { Main, Map, NotFount };
+export { Login, Main, Map, NotFount, Signup };

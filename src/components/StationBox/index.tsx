@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { Station } from "../../@types/maps";
+import { Station } from "../../@types/map";
 
 function StationBox({ title, location, time, price }: Station) {
   console.log("title: " + title);
