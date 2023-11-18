@@ -10,4 +10,17 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-export { Container };
+const Comment = styled.p`
+  font-size: 14px;
+  color: #323232;
+`;
+
+const OptionWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-direction: row;
+`;
+
+export { Container, Comment, OptionWrapper };
