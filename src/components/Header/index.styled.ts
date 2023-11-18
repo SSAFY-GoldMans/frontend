@@ -8,12 +8,15 @@ const Container = styled.div`
 
   flex-direction: row;
 
-  height: 100px;
+  height: 75px;
 
   border-bottom: 1px solid ${color.gray003 + 50};
 `;
 
 const LogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 300px;
 `;
 
@@ -54,6 +57,16 @@ const UserWrapper = styled.div`
   width: 500px;
 `;
 
+const AccountButton = styled.button`
+  min-width: 106px;
+  height: 30px;
+  border-radius: 4px;
+  background-color: rgb(238, 238, 238);
+  padding: 5px 8px 6px;
+
+  transform: translateX(-30px);
+`;
+
 export {
   Container,
   LogoWrapper,
@@ -63,4 +76,5 @@ export {
   BuildingInfoHeader,
   BuildingInfoComment,
   UserWrapper,
+  AccountButton,
 };

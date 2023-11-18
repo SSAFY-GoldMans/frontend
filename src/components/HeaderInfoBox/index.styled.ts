@@ -1,10 +1,6 @@
 import { color } from '@/styles/colors';
 import styled from '@emotion/styled';
 
-type Hover = {
-  isHover: boolean;
-};
-
 const Container = styled.div`
   padding: 10px;
 
@@ -38,13 +34,18 @@ const BuildingInfoComment = styled.p`
 `;
 
 const PathWrapper = styled.div`
+  z-index: 999;
   display: none;
   position: absolute;
 
-  top: 100px;
+  top: 75px;
+  transform: translateX(-10px);
+
+  padding: 10px;
   width: 150px;
 
-  z-index: 999;
+  border: 1px solid ${color.gray001 + 33};
+  background-color: ${color.white001};
 `;
 
 const PathInfo = styled.div`
