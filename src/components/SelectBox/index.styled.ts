@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { color } from '@/styles/colors';
+
 const Container = styled.div`
   position: relative;
   width: 150px;
@@ -19,7 +21,7 @@ const StyledSelect = styled.select`
 
   &:hover,
   &:focus {
-    border-color: #4caf50;
+    border-color: ${color.blue001};
   }
 `;
 
