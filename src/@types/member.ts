@@ -3,6 +3,12 @@ type MemberLoginRequest = {
   password: string;
 };
 
-type MemberLoginResponse = {};
+type MemberSignupRequest = {
+  email: string;
+  password: string;
+  validatePassword: string;
+  phone: string;
+  role: string;
+};
 
-export { MemberLoginRequest, MemberLoginResponse };
+export { MemberLoginRequest, MemberSignupRequest };
