@@ -1,6 +1,7 @@
-import { ROLE } from '@/constants/member';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
+
+import { color } from '@/styles/colors';
 
 const Container = styled.div`
   display: flex;
@@ -8,7 +9,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 
-  height: 100vh;
+  padding-top: 100px;
 `;
 
 const Header = styled.h2`
@@ -25,9 +26,9 @@ const LoginForm = styled.form`
 
   width: 350px;
   padding: 50px 30px 20px 30px;
-  border: 1px solid #0f0f0f50;
+  border: 1px solid ${color.black002 + 50};
   border-radius: 10px;
-  box-shadow: 2px 2px 2px #0f0f0f25;
+  box-shadow: 2px 2px 2px ${color.black002 + 25};
 `;
 
 const Input = styled.input`
@@ -36,7 +37,7 @@ const Input = styled.input`
   margin-bottom: 10px;
 
   border: 0;
-  border-bottom: 2px solid #00000050;
+  border-bottom: 2px solid ${color.black001 + 50};
 
   font-size: 16px;
 
@@ -44,7 +45,7 @@ const Input = styled.input`
 
   &:focus {
     outline: none;
-    border-bottom: 2.5px solid #3a60d4;
+    border-bottom: 2.5px solid ${color.blue001};
   }
 `;
 
@@ -61,8 +62,8 @@ const Button = styled.button`
   width: 360px;
   height: 52px;
 
-  background-color: #3a60d4;
-  color: #f8f8f8;
+  background-color: ${color.blue001};
+  color: ${color.white001};
 
   border-radius: 10px;
 `;
@@ -80,7 +81,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 
   &:hover {
-    color: black;
+    color: ${color.black001};
   }
 `;
 

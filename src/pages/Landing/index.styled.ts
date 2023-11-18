@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { color } from '@/styles/colors';
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -12,7 +14,7 @@ const Container = styled.div`
 
 const Comment = styled.p`
   font-size: 14px;
-  color: #323232;
+  color: ${color.gray001 + 75};
 `;
 
 const OptionWrapper = styled.div`

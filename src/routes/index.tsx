@@ -1,4 +1,4 @@
-import { Landing, Login, Main, Map, NotFount, Signup } from '@/pages/Pages';
+import { Landing, Login, Main, NotFount, Signup } from '@/pages/Pages';
 
 import { Route, Routes as BrowserRoutes } from 'react-router-dom';
 
@@ -10,7 +10,6 @@ function Routes() {
       <Route path={BROWSER_PATH.LANDING} element={<Landing />} />
       <Route path={BROWSER_PATH.LOGIN} element={<Login />} />
       <Route path={BROWSER_PATH.BASE} element={<Main />} />
-      <Route path={BROWSER_PATH.MAP} element={<Map />} />
       <Route path={BROWSER_PATH.SIGNUP} element={<Signup />} />
       <Route path={'*'} element={<NotFount />} />
     </BrowserRoutes>

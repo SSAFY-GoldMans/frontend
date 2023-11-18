@@ -10,6 +10,7 @@ import Switch from '@mui/material/Switch';
 import TrainAnimation from '@/components/Animation/Train';
 
 import * as S from './index.styled';
+import { color } from '@/styles/colors';
 
 function Signup() {
   const navigate = useNavigate();
@@ -109,9 +110,13 @@ function Signup() {
         <TrainAnimation />
         <S.ToggleWrapper>
           {info.role === ROLE.USER ? (
-            <S.Comment color={'gray'}>혹시 중개업자 이신가요?</S.Comment>
+            <S.Comment color={color.gray001 + 90}>
+              혹시 중개업자 이신가요?
+            </S.Comment>
           ) : (
-            <S.Comment color={'blue'}>혹시 일반회원 이신가요?</S.Comment>
+            <S.Comment color={color.blue001 + 90}>
+              혹시 일반회원 이신가요?
+            </S.Comment>
           )}
           <Switch
             checked={roleChecked}
