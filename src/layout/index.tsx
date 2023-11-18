@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Header from '@/pages/Header';
-import Footer from '@/pages/Footer';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 import * as S from './index.styled';
 

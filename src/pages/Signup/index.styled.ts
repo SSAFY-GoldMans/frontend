@@ -1,7 +1,7 @@
-import { ROLE } from '@/constants/member';
-import { color } from '@/styles/colors';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
+
+import { color } from '@/styles/colors';
 
 const Container = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 
-  height: 100vh;
+  padding-top: 100px;
 `;
 
 const Header = styled.h2`
