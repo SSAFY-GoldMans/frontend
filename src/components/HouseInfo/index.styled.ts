@@ -1,5 +1,6 @@
 import { color } from '@/styles/colors';
 import styled from '@emotion/styled';
+import { Box, Snackbar } from '@mui/material';
 
 const Container = styled.div`
   display: flex;
@@ -75,7 +76,7 @@ const Comment = styled.p`
   color: ${color.gray001};
 `;
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,6 +95,10 @@ const Button = styled.button`
   border-radius: 10px;
 `;
 
+const StyledSnackbar = styled(Snackbar)`
+  font-size: 100px;
+`;
+
 export {
   Container,
   Img,
@@ -106,4 +111,5 @@ export {
   Comment,
   ButtonWrapper,
   Button,
+  StyledSnackbar,
 };

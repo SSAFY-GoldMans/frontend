@@ -1,9 +1,16 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AgentInfoType } from '@/@types/agent';
 import { BuildingInfoType } from '@/@types/building';
 
+import Box from '@mui/material/Box';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import * as S from './index.styled';
+
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 interface Props {
   houseInfoHandler: () => void;
@@ -17,6 +24,22 @@ function HouseInfo({ houseInfoHandler, building, agent }: Props) {
   const handleBack = () => {
     houseInfoHandler();
     navigate(``);
+  };
+
+  /* Snack Bar */
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
+
+  const handleClick = (newState: SnackbarOrigin) => () => {
+    setState({ ...newState, open: true });
+  };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
   };
 
   return (
@@ -66,8 +89,21 @@ function HouseInfo({ houseInfoHandler, building, agent }: Props) {
           <S.Comment>{agent.code}</S.Comment>
         </S.ColumnWrapper>
       </S.Wrapper>
+
       <S.ButtonWrapper>
-        <S.Button>문의하기</S.Button>
+        <S.Button
+          onClick={handleClick({ vertical: 'bottom', horizontal: 'center' })}
+        >
+          문의하기
+        </S.Button>
+        {/* TODO: 로그인 유무에 따른 처리 */}
+        <S.StyledSnackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          onClose={handleClose}
+          message="공인중개사에게 문자를 보냈습니다."
+          key={vertical + horizontal}
+        />
       </S.ButtonWrapper>
     </S.Container>
   );
