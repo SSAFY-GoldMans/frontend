@@ -36,4 +36,13 @@ const HeaderComment = styled.p`
   color: ${color.gray001 + 90};
 `;
 
-export { Container, HeaderWrapper, Header, HeaderTime, HeaderComment };
+const HouseCardWrapper = styled.div``;
+
+export {
+  Container,
+  HeaderWrapper,
+  Header,
+  HeaderTime,
+  HeaderComment,
+  HouseCardWrapper,
+};

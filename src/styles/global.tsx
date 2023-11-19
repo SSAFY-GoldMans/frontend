@@ -18,6 +18,13 @@ const style = () => css`
     font-size: 2.5rem;
   }
 
+  p,
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+  }
+
   span {
     font-family: 'NanumSquareNeo';
   }
