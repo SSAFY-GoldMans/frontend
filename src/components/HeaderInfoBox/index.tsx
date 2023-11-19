@@ -1,9 +1,12 @@
+import { useState } from 'react';
+
 import { HeaderInfoType } from '@/@types/header';
 
 import * as S from './index.styled';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function HeaderInfoBox({ title, comment, optionType }: HeaderInfoType) {
+function HeaderInfoBox({ title, path, comment, optionType }: HeaderInfoType) {
+  const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
@@ -11,6 +14,7 @@ function HeaderInfoBox({ title, comment, optionType }: HeaderInfoType) {
       <S.BuildingInfoWrapper
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onClick={() => navigate(path)}
       >
         <S.BuildingInfoHeader>{title}</S.BuildingInfoHeader>
         <S.BuildingInfoComment>{comment}</S.BuildingInfoComment>

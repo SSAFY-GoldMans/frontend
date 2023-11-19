@@ -7,9 +7,8 @@ const API_PATH = {
 
 const BROWSER_PATH = {
   BASE: '/',
-  LANDING: '/landing',
+  HOME: '/home',
   LOGIN: '/login',
-  MAP: '/map',
   SIGNUP: '/signup',
 };
 

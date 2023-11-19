@@ -30,16 +30,6 @@ const Input = styled.input`
     text-transform: uppercase;
     letter-spacing: 1.5px;
   }
-
-  &:hover,
-  &:focus {
-    padding: 12px 0;
-    outline: 0;
-    border: 1px solid transparent;
-    border-bottom: 1px solid ${color.gray003};
-    border-radius: 0;
-    background-position: 100% center;
-  }
 `;
 
 export { Container, Input };
