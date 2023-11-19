@@ -12,7 +12,7 @@ function Header() {
   return (
     <S.Container>
       <S.LogoWrapper>
-        <S.Logo>철부지</S.Logo>
+        <S.Logo onClick={() => navigate(BROWSER_PATH.BASE)}>철부지</S.Logo>
       </S.LogoWrapper>
       <S.BuildingWrapper>
         <HeaderInfoBox {...HeaderAptType} />

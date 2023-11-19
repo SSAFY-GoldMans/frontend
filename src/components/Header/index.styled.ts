@@ -8,6 +8,7 @@ const Container = styled.div`
 
   flex-direction: row;
 
+  width: 100%;
   height: 75px;
 
   border-bottom: 1px solid ${color.gray003 + 50};
@@ -20,7 +21,9 @@ const LogoWrapper = styled.div`
   width: 300px;
 `;
 
-const Logo = styled.h1``;
+const Logo = styled.h1`
+  cursor: pointer;
+`;
 
 const BuildingWrapper = styled.div`
   display: flex;

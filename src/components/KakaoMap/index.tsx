@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const { kakao } = window;
+import * as S from './index.styled';
 
 function KakaoMap() {
+  /* 카카오 지도 API  */
+  const { kakao } = window;
   useEffect(() => {
     let container = document.getElementById('map');
 
@@ -15,19 +17,34 @@ function KakaoMap() {
 
     const markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
 
-    // 마커를 생성합니다
     const marker = new kakao.maps.Marker({
       position: markerPosition,
     });
 
-    // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map);
   }, []);
 
+  /* 창 크기 변하는 것 */
+  const [width, setWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
-    <div>
-      <div id="map" style={{ width: '500px', height: '500px' }}></div>
-    </div>
+    <S.Container>
+      <S.Map width={width - 700} id="map"></S.Map>
+    </S.Container>
   );
 }
 
