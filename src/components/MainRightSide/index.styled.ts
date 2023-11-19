@@ -17,6 +17,7 @@ const HeaderWrapper = styled.div`
   flex-direction: column;
 
   width: 350px;
+  height: 77px;
 
   border-bottom: 1px solid ${color.black001 + 50};
 `;
@@ -36,7 +37,16 @@ const HeaderComment = styled.p`
   color: ${color.gray001 + 90};
 `;
 
-const HouseCardWrapper = styled.div``;
+const HouseCardWrapper = styled.div`
+  display: block;
+  flex-direction: column;
+
+  height: 787px;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 export {
   Container,
