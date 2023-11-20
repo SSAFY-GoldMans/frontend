@@ -1,14 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { FilterOptionType } from '@/@types/filter';
+import { SALES } from '@/constants/building';
 import MainLeftSide from '@/components/MainLeftSide';
 import KakaoMap from '@/components/KakaoMap';
 import MainRightSide from '@/components/MainRightSide';
 
 import * as S from './index.styled';
-import { SALES } from '@/constants/building';
+import { StationMapInfoType } from '@/@types/metro';
+
+/* TODO: 추후 API로 삭제 */
+const station: StationMapInfoType = {
+  id: 1,
+  name: '역삼역',
+  lng: 127.036377,
+  lat: 37.500643,
+};
 
 function Main() {
+  const { kakao } = window;
   /* Filter 옵션 */
   const [type, setType] = useState<string>(SALES.JEONSE);
   const [fee, setFee] = useState<number[]>([0, 30]);
@@ -36,6 +45,7 @@ function Main() {
         <MainLeftSide />
       </S.LeftWrapper>
       <KakaoMap
+        kakao={kakao}
         type={type}
         fee={fee}
         rent={rent}
@@ -44,6 +54,7 @@ function Main() {
         handleRentChange={handleRentChange}
         handleAreaChange={handleAreaChange}
         handleFilterReset={handleFilterReset}
+        station={station}
       />
       <S.RightWrapper>
         <MainRightSide
