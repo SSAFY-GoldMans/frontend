@@ -1,26 +1,30 @@
 import { useEffect, useState } from 'react';
+
 import HouseFilter from '../HouseFilter';
 
 import * as S from './index.styled';
 
-/* TODO: 추후 분리 */
-import { FilterOptionType } from '@/@types/filter';
-import { SALES } from '@/constants/building';
-const dummyOption: FilterOptionType = {
-  type: 'jeonse',
-  fee: [2, 50],
-  rent: [0, 30],
-  area: [1, 30],
-};
+interface Props {
+  type: string;
+  fee: number[];
+  rent: number[];
+  area: number[];
+  handleFeeChange: (event: Event, newValue: number | number[]) => void;
+  handleRentChange: (event: Event, newValue: number | number[]) => void;
+  handleAreaChange: (event: Event, newValue: number | number[]) => void;
+  handleFilterReset: () => void;
+}
 
-const [filter, setFilter] = useState<FilterOptionType>({
-  type: SALES.JEONSE,
-  fee: [0, 30],
-  rent: [0, 10],
-  area: [0, 40],
-});
-
-function KakaoMap() {
+function KakaoMap({
+  type,
+  fee,
+  rent,
+  area,
+  handleFeeChange,
+  handleRentChange,
+  handleAreaChange,
+  handleFilterReset,
+}: Props) {
   /* 카카오 지도 API  */
   const { kakao } = window;
   useEffect(() => {
@@ -61,7 +65,16 @@ function KakaoMap() {
 
   return (
     <S.Container>
-      <HouseFilter {...dummyOption} />
+      <HouseFilter
+        type={type}
+        area={area}
+        fee={fee}
+        rent={rent}
+        handleFeeChange={handleFeeChange}
+        handleRentChange={handleRentChange}
+        handleAreaChange={handleAreaChange}
+        handleFilterReset={handleFilterReset}
+      />
       <S.Map width={width - 700} id="map"></S.Map>
     </S.Container>
   );

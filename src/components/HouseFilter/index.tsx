@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { FilterOptionType } from '@/@types/filter';
 import { TimeOption } from '@/constants/filter';
 import { SALES } from '@/constants/building';
 import SelectBox from '../SelectBox';
@@ -9,7 +8,27 @@ import { Close } from '@mui/icons-material';
 import { Slider } from '@mui/material';
 import * as S from './index.styled';
 
-function HouseFilter({ type, fee, rent, area }: FilterOptionType) {
+interface Props {
+  type: string;
+  fee: number[];
+  rent: number[];
+  area: number[];
+  handleFeeChange: (event: Event, newValue: number | number[]) => void;
+  handleRentChange: (event: Event, newValue: number | number[]) => void;
+  handleAreaChange: (event: Event, newValue: number | number[]) => void;
+  handleFilterReset: () => void;
+}
+
+function HouseFilter({
+  type,
+  fee,
+  rent,
+  area,
+  handleFeeChange,
+  handleRentChange,
+  handleAreaChange,
+  handleFilterReset,
+}: Props) {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleFilterOpen = () => {
@@ -53,7 +72,9 @@ function HouseFilter({ type, fee, rent, area }: FilterOptionType) {
               <S.Header>필터</S.Header>
             </S.RowWrapper>
             {/* 필터 초기화 기능 구현 */}
-            <S.SelectComment css={S.Pointer}>모두 초기화</S.SelectComment>
+            <S.SelectComment css={S.Pointer} onClick={handleFilterReset}>
+              모두 초기화
+            </S.SelectComment>
           </S.RowBetweenWrapper>
           <S.Line />
           {/* 필터 카드 영역 */}
@@ -64,7 +85,13 @@ function HouseFilter({ type, fee, rent, area }: FilterOptionType) {
             </S.FilterHeader>
             <S.ColumnWrapper>
               {/* 0만원 ~ 3억원 : 천만단위 */}
-              <Slider css={S.SliderWidth} value={fee!} min={0} max={30} />
+              <Slider
+                css={S.SliderWidth}
+                onChange={handleFeeChange}
+                value={fee!}
+                min={0}
+                max={30}
+              />
             </S.ColumnWrapper>
             <S.Line />
           </S.FilterCard>
@@ -76,7 +103,13 @@ function HouseFilter({ type, fee, rent, area }: FilterOptionType) {
               </S.FilterHeader>
               <S.ColumnWrapper>
                 {/* 0만원 ~ 100만원 : 10만단위 */}
-                <Slider css={S.SliderWidth} value={rent!} min={0} max={10} />
+                <Slider
+                  css={S.SliderWidth}
+                  onChange={handleRentChange}
+                  value={rent!}
+                  min={0}
+                  max={10}
+                />
               </S.ColumnWrapper>
               <S.Line />
             </S.FilterCard>
@@ -86,11 +119,17 @@ function HouseFilter({ type, fee, rent, area }: FilterOptionType) {
           <S.FilterCard>
             <S.FilterComment>면적</S.FilterComment>
             <S.FilterHeader>
-              {area?.at(0)}평 - {area?.at(0)}평
+              {area?.at(0)}평 - {area?.at(1)}평
             </S.FilterHeader>
             <S.ColumnWrapper>
               {/* 0평 ~ 40평 : 1평 단위 */}
-              <Slider css={S.SliderWidth} value={area!} min={0} max={40} />
+              <Slider
+                css={S.SliderWidth}
+                onChange={handleAreaChange}
+                value={area!}
+                min={0}
+                max={40}
+              />
             </S.ColumnWrapper>
             <S.Line />
           </S.FilterCard>
