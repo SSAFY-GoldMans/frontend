@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { TimeOption } from '@/constants/filter';
 import { SALES } from '@/constants/building';
@@ -35,6 +35,79 @@ function HouseFilter({
     setOpen(!open);
   };
 
+  /* 출력 문구 */
+  const [feeMessage, setFeeMessage] = useState<String>('전체 금액');
+
+  useEffect(() => {
+    const min: number = fee.at(0)!;
+    const max: number = fee.at(1)!;
+    if (min === 0 && max === 30) {
+      setFeeMessage('전체 금액');
+    } else if (min === 0 && max !== 30) {
+      if (max < 10) {
+        setFeeMessage(`${max * 1000}만원 이하`);
+      } else {
+        setFeeMessage(`${(max * 1.0) / 10}억원 이하`);
+      }
+    } else if (min !== 0 && max === 30) {
+      if (min < 10) {
+        setFeeMessage(`${min * 1000}만원 이상`);
+      } else {
+        setFeeMessage(`${(min * 1.0) / 10}억원 이상`);
+      }
+    } else if (min === max) {
+      if (min < 10) {
+        setFeeMessage(`${min * 1000}만원 이상`);
+      } else {
+        setFeeMessage(`${(min * 1.0) / 10}억원 이상`);
+      }
+    } else {
+      if (min < 10 && max < 10) {
+        setFeeMessage(`${min * 1000}만원 - ${max * 1000}만원`);
+      } else if (min < 10) {
+        setFeeMessage(`${min * 1000}만원 - ${(max * 1.0) / 10}억원`);
+      } else {
+        setFeeMessage(`${(min * 1.0) / 10}억원 - ${(max * 1.0) / 10}억원`);
+      }
+    }
+  }, [fee]);
+
+  const [rentMessage, setRentMessage] = useState<String>('전체 금액');
+
+  useEffect(() => {
+    const min: number = rent.at(0)!;
+    const max: number = rent.at(1)!;
+    if (min === 0 && max === 10) {
+      setRentMessage('전체 금액');
+    } else if (min === 0 && max !== 10) {
+      setRentMessage(`${max * 10}만원 이하`);
+    } else if (min !== 0 && max === 10) {
+      setRentMessage(`${min * 10}만원 이상`);
+    } else if (min === max) {
+      setRentMessage(`${min * 10}만원 이상`);
+    } else {
+      setRentMessage(`${min * 10}만원 - ${max * 10}만원`);
+    }
+  }, [rent]);
+
+  const [areaMessage, setAreaMessage] = useState<String>('전체 금액');
+
+  useEffect(() => {
+    const min: number = area.at(0)!;
+    const max: number = area.at(1)!;
+    if (min === 0 && max === 40) {
+      setAreaMessage('전체 평수');
+    } else if (min === 0 && max !== 40) {
+      setAreaMessage(`${max}평 이하`);
+    } else if (min !== 0 && max === 40) {
+      setAreaMessage(`${min}평 이상`);
+    } else if (min === max) {
+      setAreaMessage(`${min}평 이상`);
+    } else {
+      setAreaMessage(`${min}평 - ${max}평`);
+    }
+  }, [area]);
+
   return (
     <S.Container>
       <S.RowBetweenWrapper>
@@ -52,19 +125,12 @@ function HouseFilter({
         </S.FilterHandlerButton>
         <S.SelectWrapper>
           <S.SelectComment>
-            {fee !== null
-              ? `${fee?.at(0)}만원 이상 - ${
-                  fee?.at(1) === 30 ? fee?.at(1) + '억원 이상' : fee?.at(1)
-                }만원 이하`
-              : null}
-            ·
-            {rent !== null && type === SALES.JEONSE ? `${rent}만원 이하` : null}{' '}
-            · {area !== null ? `${area}평대` : null}
+            {feeMessage} · {rentMessage} · {areaMessage}
           </S.SelectComment>
         </S.SelectWrapper>
       </S.RowBetweenWrapper>
       <S.Line />
-      {true ? (
+      {open ? (
         <S.FilterWrapper>
           <S.RowBetweenWrapper>
             <S.RowWrapper>
@@ -79,10 +145,8 @@ function HouseFilter({
           <S.Line />
           {/* 필터 카드 영역 */}
           <S.FilterCard>
-            <S.FilterComment>보증금)</S.FilterComment>
-            <S.FilterHeader>
-              {fee?.at(0)}만원 - {fee?.at(1)}만원
-            </S.FilterHeader>
+            <S.FilterComment>보증금</S.FilterComment>
+            <S.FilterHeader>{feeMessage}</S.FilterHeader>
             <S.ColumnWrapper>
               {/* 0만원 ~ 3억원 : 천만단위 */}
               <Slider
@@ -98,9 +162,7 @@ function HouseFilter({
           {type === SALES.JEONSE ? (
             <S.FilterCard>
               <S.FilterComment>월세</S.FilterComment>
-              <S.FilterHeader>
-                {rent?.at(0)} - {rent?.at(1)}
-              </S.FilterHeader>
+              <S.FilterHeader>{rentMessage}</S.FilterHeader>
               <S.ColumnWrapper>
                 {/* 0만원 ~ 100만원 : 10만단위 */}
                 <Slider
@@ -118,9 +180,7 @@ function HouseFilter({
           )}
           <S.FilterCard>
             <S.FilterComment>면적</S.FilterComment>
-            <S.FilterHeader>
-              {area?.at(0)}평 - {area?.at(1)}평
-            </S.FilterHeader>
+            <S.FilterHeader>{areaMessage}</S.FilterHeader>
             <S.ColumnWrapper>
               {/* 0평 ~ 40평 : 1평 단위 */}
               <Slider
