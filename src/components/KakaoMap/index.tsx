@@ -1,6 +1,24 @@
 import { useEffect, useState } from 'react';
+import HouseFilter from '../HouseFilter';
 
 import * as S from './index.styled';
+
+/* TODO: 추후 분리 */
+import { FilterOptionType } from '@/@types/filter';
+import { SALES } from '@/constants/building';
+const dummyOption: FilterOptionType = {
+  type: 'jeonse',
+  fee: [2, 50],
+  rent: [0, 30],
+  area: [1, 30],
+};
+
+const [filter, setFilter] = useState<FilterOptionType>({
+  type: SALES.JEONSE,
+  fee: [0, 30],
+  rent: [0, 10],
+  area: [0, 40],
+});
 
 function KakaoMap() {
   /* 카카오 지도 API  */
@@ -43,6 +61,7 @@ function KakaoMap() {
 
   return (
     <S.Container>
+      <HouseFilter {...dummyOption} />
       <S.Map width={width - 700} id="map"></S.Map>
     </S.Container>
   );

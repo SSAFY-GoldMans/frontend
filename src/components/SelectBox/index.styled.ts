@@ -4,7 +4,8 @@ import { color } from '@/styles/colors';
 
 const Container = styled.div`
   position: relative;
-  width: 150px;
+  width: 125px;
+
   margin: 20px;
 `;
 
