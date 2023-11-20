@@ -1,8 +1,30 @@
 import { useEffect, useState } from 'react';
 
+import HouseFilter from '../HouseFilter';
+
 import * as S from './index.styled';
 
-function KakaoMap() {
+interface Props {
+  type: string;
+  fee: number[];
+  rent: number[];
+  area: number[];
+  handleFeeChange: (event: Event, newValue: number | number[]) => void;
+  handleRentChange: (event: Event, newValue: number | number[]) => void;
+  handleAreaChange: (event: Event, newValue: number | number[]) => void;
+  handleFilterReset: () => void;
+}
+
+function KakaoMap({
+  type,
+  fee,
+  rent,
+  area,
+  handleFeeChange,
+  handleRentChange,
+  handleAreaChange,
+  handleFilterReset,
+}: Props) {
   /* 카카오 지도 API  */
   const { kakao } = window;
   useEffect(() => {
@@ -43,6 +65,16 @@ function KakaoMap() {
 
   return (
     <S.Container>
+      <HouseFilter
+        type={type}
+        area={area}
+        fee={fee}
+        rent={rent}
+        handleFeeChange={handleFeeChange}
+        handleRentChange={handleRentChange}
+        handleAreaChange={handleAreaChange}
+        handleFilterReset={handleFilterReset}
+      />
       <S.Map width={width - 700} id="map"></S.Map>
     </S.Container>
   );

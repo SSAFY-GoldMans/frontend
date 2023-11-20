@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { AgentInfoType } from '@/@types/agent';
 import { BuildingInfoType } from '@/@types/building';
 
-import Box from '@mui/material/Box';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import { SnackbarOrigin } from '@mui/material/Snackbar';
+
 import * as S from './index.styled';
 
 interface State extends SnackbarOrigin {
@@ -89,7 +89,6 @@ function HouseInfo({ houseInfoHandler, building, agent }: Props) {
           <S.Comment>{agent.code}</S.Comment>
         </S.ColumnWrapper>
       </S.Wrapper>
-
       <S.ButtonWrapper>
         <S.Button
           onClick={handleClick({ vertical: 'bottom', horizontal: 'center' })}

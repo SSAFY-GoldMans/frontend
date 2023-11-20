@@ -5,10 +5,12 @@ type ScreenProps = {
 };
 
 const Container = styled.div`
+  display: flex;
   margin: 0;
 `;
 
 const Map = styled.div<ScreenProps>`
+  position: static;
   height: 859px;
   width: ${props => (props.width ? `${props.width}px` : '100%')};
 

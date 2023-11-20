@@ -10,6 +10,7 @@ const LeftWrapper = styled.div`
 `;
 
 const RightWrapper = styled.div`
+  position: static;
   width: 400px;
 `;
 
