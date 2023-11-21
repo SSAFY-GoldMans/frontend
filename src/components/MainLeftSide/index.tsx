@@ -1,8 +1,8 @@
-import { StationInfoType } from '@/@types/metro';
 import StationInfo from '../StationInfo';
 
-import * as S from './index.styled';
 import { StationInfoResponse } from '@/@types/apis/metro';
+
+import * as S from './index.styled';
 
 interface Props {
   stationInfo: StationInfoResponse[];

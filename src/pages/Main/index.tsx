@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { StationInfoType, StationMapInfoType } from '@/@types/metro';
 import { requestStationInfo } from '@/apis/request/metro';
+import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
+import { StationInfoType, StationMapInfoType } from '@/@types/metro';
 import { BUILDING, SALES } from '@/constants/building';
 import MainLeftSide from '@/components/MainLeftSide';
 import KakaoMap from '@/components/KakaoMap';
 import MainRightSide from '@/components/MainRightSide';
 
 import * as S from './index.styled';
-import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
+import Loading from '../Loading';
 
 /* TODO: 추후 API로 삭제 */
 const station: StationMapInfoType = {
@@ -34,6 +35,8 @@ const info: StationInfoType[] = [
 function Main() {
   const { kakao } = window;
   const [searchParam] = useSearchParams();
+  const [loading, setLoading] = useState<boolean>(false);
+
   /* 집 옵션 */
   const [building, setBuilding] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -84,6 +87,7 @@ function Main() {
       // 잘못된 요청을 방지
       return;
     }
+    setLoading(true);
     requestStationInfo(req)
       .then(res => {
         setStationInfo(res.data.body);
@@ -92,7 +96,7 @@ function Main() {
       .catch(err => {
         console.log(err);
       })
-      .finally(() => console.log(req));
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -123,6 +127,10 @@ function Main() {
       console.log(`${query} + ${time} + ${building} + ${type}`);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <S.Container>
