@@ -5,7 +5,6 @@ import { SALES } from '@/constants/building';
 import SelectBox from '../SelectBox';
 
 import * as S from './index.styled';
-
 import { Close } from '@mui/icons-material';
 import { Slider } from '@mui/material';
 
@@ -20,7 +19,7 @@ interface Props {
   handleFilterReset: () => void;
   handleTimeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   handleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  goSearch: (event: React.KeyboardEvent) => void;
+  goSearch: () => void;
 }
 
 function HouseFilter({
@@ -36,14 +35,14 @@ function HouseFilter({
   handleTimeChange,
   goSearch,
 }: Props) {
+  /* STATE: 필터 사용 여뷰, FUNCTION: 필터 토글 기능 */
   const [open, setOpen] = useState<boolean>(false);
   const handleFilterOpen = () => {
     setOpen(!open);
   };
 
-  /* 출력 문구 */
+  /* STATE: 보증금, FUNCTION: 보증금을 표시하기 위한 로직 */
   const [feeMessage, setFeeMessage] = useState<String>('전체 금액');
-
   useEffect(() => {
     const min: number = fee.at(0)!;
     const max: number = fee.at(1)!;
@@ -78,8 +77,8 @@ function HouseFilter({
     }
   }, [fee]);
 
+  /* STATE: 월세 금액, FUNCTION: 월세 금액을 표시하기 위한 로직*/
   const [rentMessage, setRentMessage] = useState<String>('전체 금액');
-
   useEffect(() => {
     const min: number = rent.at(0)!;
     const max: number = rent.at(1)!;
@@ -96,8 +95,8 @@ function HouseFilter({
     }
   }, [rent]);
 
-  const [areaMessage, setAreaMessage] = useState<String>('전체 금액');
-
+  /* STATE: 전용 면적, FUNCTION: 전용 면적을 표시하기 위한 로직*/
+  const [areaMessage, setAreaMessage] = useState<String>('전체 평수');
   useEffect(() => {
     const min: number = area.at(0)!;
     const max: number = area.at(1)!;
@@ -114,6 +113,16 @@ function HouseFilter({
     }
   }, [area]);
 
+  /**
+   * FUNCTION: 키보드를 누르면 검색을 한다
+   * @param e React.KeyboardEvent
+   */
+  const handleOnKeyUp = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      goSearch();
+    }
+  };
+
   return (
     <S.Container>
       <S.RowBetweenWrapper>
@@ -121,7 +130,8 @@ function HouseFilter({
         <S.SelectBoxWrapper>
           <SelectBox option={TimeOption} handleTimeChange={handleTimeChange} />
         </S.SelectBoxWrapper>
-        <S.Input onChange={handleQueryChange} onKeyUp={goSearch} />
+        <S.Input onChange={handleQueryChange} onKeyUp={handleOnKeyUp} />
+        <S.Button onClick={goSearch} />
       </S.RowBetweenWrapper>
       <S.Line />
       {/* 필터 상단 */}

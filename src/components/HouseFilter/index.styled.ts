@@ -149,6 +149,17 @@ const SliderWidth = css`
   width: 330px;
 `;
 
+const Button = styled.div`
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  translate: 325px 1px;
+
+  z-index: 1;
+
+  cursor: pointer;
+`;
+
 export {
   Container,
   RowBetweenWrapper,
@@ -169,4 +180,5 @@ export {
   Header,
   MoneyInput,
   SliderWidth,
+  Button,
 };

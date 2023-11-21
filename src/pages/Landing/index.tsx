@@ -30,13 +30,11 @@ function Landing() {
    * FUNCTION: 엔터를 누른뒤 검색 결과 페이지로 이동
    * @param e React.KeyboardEvent
    */
-  const goSearch = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      let uri = BROWSER_PATH.HOME;
-      uri += `?time=${time}`;
-      uri += `&query=${query}`;
-      navigate(uri);
-    }
+  const goSearch = () => {
+    let uri = BROWSER_PATH.HOME;
+    uri += `?time=${time}`;
+    uri += `&query=${query}`;
+    navigate(uri);
   };
 
   return (
@@ -49,7 +47,7 @@ function Landing() {
       <SearchInput
         query={query}
         handleQueryChange={handleQueryChange}
-        handleOnKeyPress={goSearch}
+        goSearch={goSearch}
       />
     </S.Container>
   );

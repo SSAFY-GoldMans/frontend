@@ -19,7 +19,7 @@ interface Props {
   handleFilterReset: () => void;
   handleTimeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   handleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  goSearch: (event: React.KeyboardEvent) => void;
+  goSearch: () => void;
   station: StationMapInfoType;
 }
 

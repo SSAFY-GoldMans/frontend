@@ -5,6 +5,7 @@ import { color } from '@/styles/colors';
 const Container = styled.div``;
 
 const Input = styled.input`
+  position: static;
   width: 350px;
   padding: 12px 24px;
   background-color: transparent;
@@ -30,4 +31,15 @@ const Input = styled.input`
   }
 `;
 
-export { Container, Input };
+const Button = styled.div`
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  translate: 360px -31px;
+
+  z-index: 1;
+
+  cursor: pointer;
+`;
+
+export { Container, Input, Button };

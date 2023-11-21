@@ -3,14 +3,14 @@ import { useSearchParams } from 'react-router-dom';
 
 import { requestStationInfo } from '@/apis/request/metro';
 import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
-import { StationInfoType, StationMapInfoType } from '@/@types/metro';
+import { StationMapInfoType } from '@/@types/metro';
 import { BUILDING, SALES } from '@/constants/building';
 import MainLeftSide from '@/components/MainLeftSide';
 import KakaoMap from '@/components/KakaoMap';
 import MainRightSide from '@/components/MainRightSide';
+import Loading from '../Loading';
 
 import * as S from './index.styled';
-import Loading from '../Loading';
 
 /* TODO: 추후 API로 삭제 */
 const station: StationMapInfoType = {
@@ -114,18 +114,17 @@ function Main() {
   }, [fee, rent, area]);
 
   /* FUNCTION: 고정 필터 검색 기능 */
-  const goSearch = async (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      const req: StationInfoRequest = {
-        name: query,
-        time,
-        building: building.toLocaleUpperCase(),
-        type: type.toLocaleUpperCase(),
-      };
-      fetchStationInfo(req);
-    }
+  const goSearch = () => {
+    const req: StationInfoRequest = {
+      name: query,
+      time,
+      building: building.toLocaleUpperCase(),
+      type: type.toLocaleUpperCase(),
+    };
+    fetchStationInfo(req);
   };
 
+  /* TODO: 내가 선택한 역의 정보 */
   /* TODO: 카카오 지하철 좌표 조회 */
   /* TODO: 카카오 집 좌표 조회 */
   /* TODO: 집 정보 조회 */
@@ -160,7 +159,7 @@ function Main() {
       <S.RightWrapper>
         <MainRightSide
           startStationName={'강남역'}
-          nowStationName={'역삼역'}
+          nowStationName={query}
           time={1}
         />
       </S.RightWrapper>

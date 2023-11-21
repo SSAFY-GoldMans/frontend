@@ -1,6 +1,7 @@
-import { color } from '@/styles/colors';
-import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
+
+import { color } from '@/styles/colors';
 
 const Container = styled.div`
   display: flex;
