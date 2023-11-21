@@ -1,6 +1,11 @@
+const BUILDING = {
+  APT: 'apt',
+  OFFIECTEL: 'officetel',
+};
+
 const SALES = {
   JEONSE: 'jeonse',
   MONTHLY: 'monthly',
 };
 
-export { SALES };
+export { BUILDING, SALES };

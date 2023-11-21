@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { HeaderInfoType } from '@/@types/header';
+import { HeaderInfoType, HeaderOptionType } from '@/@types/header';
 
 import * as S from './index.styled';
-import { useNavigate } from 'react-router-dom';
 
 function HeaderInfoBox({ title, path, comment, optionType }: HeaderInfoType) {
   const navigate = useNavigate();
@@ -25,8 +25,14 @@ function HeaderInfoBox({ title, path, comment, optionType }: HeaderInfoType) {
         onMouseLeave={() => setIsHovered(false)}
         style={{ display: isHovered ? 'block' : 'none' }}
       >
-        {optionType.map((option, index: number) => (
-          <S.PathInfo key={index}>
+        {optionType.map((option: HeaderOptionType, index: number) => (
+          <S.PathInfo
+            key={index}
+            onClick={() => {
+              navigate(option.path);
+              location.reload();
+            }}
+          >
             <S.PathComment>{option.title}</S.PathComment>
           </S.PathInfo>
         ))}

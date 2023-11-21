@@ -31,7 +31,7 @@ function Landing() {
     if (e.key === 'Enter') {
       let uri = BROWSER_PATH.HOME;
       uri += `?time=${time}`;
-      uri += `?query=${query}`;
+      uri += `&query=${query}`;
       navigate(uri);
     }
   };
