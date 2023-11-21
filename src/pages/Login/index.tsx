@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { MemberLoginRequest } from '@/@types/member';
+import { MemberLoginRequest } from '@/@types/apis/member';
 import { requestLogin } from '@/apis/request/member';
 import { BROWSER_PATH } from '@/constants/path';
 

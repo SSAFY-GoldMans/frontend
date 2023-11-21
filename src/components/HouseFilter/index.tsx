@@ -4,12 +4,10 @@ import { TimeOption } from '@/constants/filter';
 import { SALES } from '@/constants/building';
 import SelectBox from '../SelectBox';
 
+import * as S from './index.styled';
+
 import { Close } from '@mui/icons-material';
 import { Slider } from '@mui/material';
-import * as S from './index.styled';
-import { BROWSER_PATH } from '@/constants/path';
-import { useNavigate } from 'react-router-dom';
-import useInput from '@/hooks/useInput';
 
 interface Props {
   type: string;
@@ -20,6 +18,9 @@ interface Props {
   handleRentChange: (event: Event, newValue: number | number[]) => void;
   handleAreaChange: (event: Event, newValue: number | number[]) => void;
   handleFilterReset: () => void;
+  handleTimeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  goSearch: (event: React.KeyboardEvent) => void;
 }
 
 function HouseFilter({
@@ -31,10 +32,11 @@ function HouseFilter({
   handleRentChange,
   handleAreaChange,
   handleFilterReset,
+  handleQueryChange,
+  handleTimeChange,
+  goSearch,
 }: Props) {
-  const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
-
   const handleFilterOpen = () => {
     setOpen(!open);
   };
@@ -112,25 +114,6 @@ function HouseFilter({
     }
   }, [area]);
 
-  const [time, setTime] = useState<number>(0);
-  const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    let temp: number = Number.parseInt(value.slice(0, 2));
-
-    setTime(isNaN(temp) ? 0 : temp);
-  };
-
-  const { value: query, changeValue: setQuery } = useInput<string>('');
-  const goSearch = (e: any) => {
-    if (e.key === 'Enter') {
-      let uri = BROWSER_PATH.HOME;
-      uri += `?query=${query}`;
-      uri += `&time=${time}`;
-      navigate(uri);
-      window.location.reload();
-    }
-  };
-
   return (
     <S.Container>
       <S.RowBetweenWrapper>
@@ -138,7 +121,7 @@ function HouseFilter({
         <S.SelectBoxWrapper>
           <SelectBox option={TimeOption} handleTimeChange={handleTimeChange} />
         </S.SelectBoxWrapper>
-        <S.Input value={query} onChange={setQuery} onKeyUp={goSearch} />
+        <S.Input onChange={handleQueryChange} onKeyUp={goSearch} />
       </S.RowBetweenWrapper>
       <S.Line />
       {/* 필터 상단 */}

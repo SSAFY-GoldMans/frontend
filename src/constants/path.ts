@@ -3,6 +3,9 @@ const API_PATH = {
     LOGIN: '/api/member/login',
     SIGNUP: '/api/member/signup',
   },
+  METRO: {
+    STATION_INFO: '/api/near',
+  },
 };
 
 const BROWSER_PATH = {

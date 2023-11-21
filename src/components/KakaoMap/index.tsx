@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import MetroStationImg from '@/assets/metro.png';
+import { StationMapInfoType } from '@/@types/metro';
 import HouseFilter from '../HouseFilter';
 
 import * as S from './index.styled';
 import { color } from '@/styles/colors';
-import { StationMapInfoType } from '@/@types/metro';
+import MetroStationImg from '@/assets/metro.png';
 
 interface Props {
   kakao: any;
@@ -17,6 +17,9 @@ interface Props {
   handleRentChange: (event: Event, newValue: number | number[]) => void;
   handleAreaChange: (event: Event, newValue: number | number[]) => void;
   handleFilterReset: () => void;
+  handleTimeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  goSearch: (event: React.KeyboardEvent) => void;
   station: StationMapInfoType;
 }
 
@@ -30,6 +33,9 @@ function KakaoMap({
   handleRentChange,
   handleAreaChange,
   handleFilterReset,
+  handleQueryChange,
+  handleTimeChange,
+  goSearch,
   station,
 }: Props) {
   /* 카카오 지도 API  */
@@ -106,6 +112,9 @@ function KakaoMap({
         handleRentChange={handleRentChange}
         handleAreaChange={handleAreaChange}
         handleFilterReset={handleFilterReset}
+        handleQueryChange={handleQueryChange}
+        handleTimeChange={handleTimeChange}
+        goSearch={goSearch}
       />
       <S.Map width={width - 700} id="map"></S.Map>
     </S.Container>

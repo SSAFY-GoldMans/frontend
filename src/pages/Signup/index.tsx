@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { MemberSignupRequest } from '@/@types/member';
+import { MemberSignupRequest } from '@/@types/apis/member';
 import { requestSignup } from '@/apis/request/member';
 import { BROWSER_PATH } from '@/constants/path';
 import { ROLE } from '@/constants/member';
