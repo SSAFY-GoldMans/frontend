@@ -7,6 +7,7 @@ type StationInfoRequest = {
 };
 
 type StationInfoResponse = {
+  id: number;
   name: string;
   time: string;
   address: string;

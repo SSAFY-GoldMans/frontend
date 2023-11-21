@@ -15,6 +15,7 @@ import { color } from '@/styles/colors';
 function Signup() {
   const navigate = useNavigate();
 
+  /* STATE: 회원 가입 정보 */
   const [info, setInfo] = useState<MemberSignupRequest>({
     email: '',
     password: '',
@@ -22,7 +23,9 @@ function Signup() {
     phone: '',
     role: ROLE.USER,
   });
+  const [roleChecked, setRoleChecked] = useState(false);
 
+  /* FUNCTION: 회원 가입 정보 수정 핸들러 */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInfo(prevInfo => ({
@@ -30,28 +33,30 @@ function Signup() {
       [name]: value,
     }));
   };
-
-  const [roleChecked, setRoleChecked] = useState(false);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRoleChecked(event.target.checked);
   };
 
+  /* FUNCTION: 사용자가 일반 회원인지 중개업자인지 확인 */
   useEffect(() => {
     info.role === ROLE.USER
       ? (info.role = ROLE.AGENT)
       : (info.role = ROLE.USER);
   }, [roleChecked]);
 
+  /**
+   * API: 사용자가 입력한 정보로 회원가입을 진행
+   * @param e `Form`의 `Action`
+   */
   const signup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     requestSignup(info)
       .then(res => {
-        console.log(res);
         navigate(BROWSER_PATH.LOGIN);
       })
       .catch(error => {
+        /* TODO: 실패시 UI/UX 구현 */
         console.log(error);
       });
   };

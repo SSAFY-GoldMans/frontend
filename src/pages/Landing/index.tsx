@@ -12,22 +12,25 @@ import * as S from './index.styled';
 
 function Landing() {
   const navigate = useNavigate();
-  /* 검색 값 */
+  /* STATE: 검색 조건, FUNCTION: 검색 조건 수정 핸들러 */
   const { value: query, changeValue: setQuery } = useInput<string>('');
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e);
   };
 
-  /* 시간 선택 값 */
-  const [time, setTime] = useState<number>(0);
+  /* STATE: 시간 조건, FUNCTION: 시간 조건 수정 핸들러 */
+  const [time, setTime] = useState<number>(120);
   const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     let temp: number = Number.parseInt(value.slice(0, 2));
-
-    setTime(isNaN(temp) ? 0 : temp);
+    setTime(isNaN(temp) ? 120 : temp);
   };
 
-  const goSearch = (e: any) => {
+  /**
+   * FUNCTION: 엔터를 누른뒤 검색 결과 페이지로 이동
+   * @param e React.KeyboardEvent
+   */
+  const goSearch = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       let uri = BROWSER_PATH.HOME;
       uri += `?time=${time}`;

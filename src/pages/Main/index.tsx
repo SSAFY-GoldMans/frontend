@@ -20,27 +20,16 @@ const station: StationMapInfoType = {
   lat: 37.500643,
 };
 
-/* TODO: 검색된 역 */
-const info: StationInfoType[] = [
-  {
-    name: '역삼역',
-    address: '강남구 역삼동',
-    time: 3,
-    minPrice: '1300만원',
-    maxPrice: '1.12억원',
-    totalCount: 120,
-  },
-];
-
 function Main() {
   const { kakao } = window;
   const [searchParam] = useSearchParams();
   const [loading, setLoading] = useState<boolean>(false);
 
-  /* 집 옵션 */
+  /* STATE: 건물 옵션 */
   const [building, setBuilding] = useState<string>('');
   const [type, setType] = useState<string>('');
 
+  /* FUNCTION: query param parsing */
   const getQueryParams = () => {
     setBuilding(searchParam.get('building') ?? BUILDING.APT);
     setType(searchParam.get('type') ?? SALES.JEONSE);
@@ -48,9 +37,11 @@ function Main() {
     setQuery(searchParam.get('query') ?? '역삼역');
   };
 
-  /* 검색 옵션 */
+  /* STATE: 검색 옵션 */
   const [time, setTime] = useState<number>(0);
   const [query, setQuery] = useState<string>('');
+
+  /* FUNCTION: 검색 옵션 데이터 가공 */
   const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const temp: number = Number.parseInt(e.target.value.slice(0, 2));
 
@@ -60,11 +51,12 @@ function Main() {
     setQuery(e.target.value);
   };
 
-  /* Filter 옵션 */
+  /* STATE: 검색 상세 옵션 */
   const [fee, setFee] = useState<number[]>([0, 30]);
   const [rent, setRent] = useState<number[]>([0, 10]);
   const [area, setArea] = useState<number[]>([0, 40]);
 
+  /* FUNCTION: 검색 상세 옵션 데이터 수정 핸들러 */
   const handleFeeChange = (event: Event, newValue: number | number[]) => {
     setFee(newValue as number[]);
   };
@@ -80,11 +72,10 @@ function Main() {
     setArea([0, 40]);
   };
 
-  /* 역 정보 조회 API */
+  /* API: 역 정보 조회 */
   const [stationInfo, setStationInfo] = useState<StationInfoResponse[]>([]);
   const fetchStationInfo = (req: StationInfoRequest) => {
     if (req.building === '' || req.type === '') {
-      // 잘못된 요청을 방지
       return;
     }
     setLoading(true);
@@ -96,13 +87,18 @@ function Main() {
       .catch(err => {
         console.log(err);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        console.log(req);
+      });
   };
 
+  /* FUNCTION: 최초 진입시 쿼리 파싱 진행 */
   useEffect(() => {
     getQueryParams();
   }, []);
 
+  /* FUNCTION: 최초 진입 후 쿼리 파싱 후 데이터 요청 */
   useEffect(() => {
     const req: StationInfoRequest = {
       name: query,
@@ -111,22 +107,29 @@ function Main() {
       type: type.toLocaleUpperCase(),
     };
     fetchStationInfo(req);
-  }, [query, time, type, building]);
+  }, [type, building]);
 
   useEffect(() => {
     console.log('추후 지도와 집 목록 조회 API 구현');
   }, [fee, rent, area]);
 
-  useEffect(() => {
-    console.log('수정');
-  }, [window.location.href]);
-
+  /* FUNCTION: 고정 필터 검색 기능 */
   const goSearch = async (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      // TODO: API 조회기능 구현
-      console.log(`${query} + ${time} + ${building} + ${type}`);
+      const req: StationInfoRequest = {
+        name: query,
+        time,
+        building: building.toLocaleUpperCase(),
+        type: type.toLocaleUpperCase(),
+      };
+      fetchStationInfo(req);
     }
   };
+
+  /* TODO: 카카오 지하철 좌표 조회 */
+  /* TODO: 카카오 집 좌표 조회 */
+  /* TODO: 집 정보 조회 */
+  /* TODO: 집 상세 정보 조회 */
 
   if (loading) {
     return <Loading />;
