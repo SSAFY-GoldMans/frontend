@@ -130,7 +130,9 @@ function Main() {
   /* TODO: 카카오 집 좌표 조회 */
   /* TODO: 집 정보 조회 */
   /* TODO: 집 상세 정보 조회 */
+  /* TODO: 중개업자 정보 상세 조회 */
 
+  /* FUNCTION: 데이터를 호출하고 있을 경우 로딩창을 보여줌 */
   if (loading) {
     return <Loading />;
   }
