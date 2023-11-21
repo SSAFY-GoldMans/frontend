@@ -2,9 +2,7 @@ import styled from '@emotion/styled';
 
 import { color } from '@/styles/colors';
 
-const Container = styled.div`
-  padding-top: 64px;
-`;
+const Container = styled.div``;
 
 const Input = styled.input`
   width: 350px;
