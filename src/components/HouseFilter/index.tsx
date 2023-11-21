@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { TimeOption } from '@/constants/filter';
 import { SALES } from '@/constants/building';
@@ -7,6 +7,9 @@ import SelectBox from '../SelectBox';
 import { Close } from '@mui/icons-material';
 import { Slider } from '@mui/material';
 import * as S from './index.styled';
+import { BROWSER_PATH } from '@/constants/path';
+import { useNavigate } from 'react-router-dom';
+import useInput from '@/hooks/useInput';
 
 interface Props {
   type: string;
@@ -29,6 +32,7 @@ function HouseFilter({
   handleAreaChange,
   handleFilterReset,
 }: Props) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
 
   const handleFilterOpen = () => {
@@ -108,14 +112,33 @@ function HouseFilter({
     }
   }, [area]);
 
+  const [time, setTime] = useState<number>(0);
+  const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    let temp: number = Number.parseInt(value.slice(0, 2));
+
+    setTime(isNaN(temp) ? 0 : temp);
+  };
+
+  const { value: query, changeValue: setQuery } = useInput<string>('');
+  const goSearch = (e: any) => {
+    if (e.key === 'Enter') {
+      let uri = BROWSER_PATH.HOME;
+      uri += `?query=${query}`;
+      uri += `&time=${time}`;
+      navigate(uri);
+      window.location.reload();
+    }
+  };
+
   return (
     <S.Container>
       <S.RowBetweenWrapper>
         {/* 검색 */}
         <S.SelectBoxWrapper>
-          <SelectBox option={TimeOption} />
+          <SelectBox option={TimeOption} handleTimeChange={handleTimeChange} />
         </S.SelectBoxWrapper>
-        <S.Input />
+        <S.Input value={query} onChange={setQuery} onKeyUp={goSearch} />
       </S.RowBetweenWrapper>
       <S.Line />
       {/* 필터 상단 */}

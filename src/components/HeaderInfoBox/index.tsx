@@ -30,7 +30,7 @@ function HeaderInfoBox({ title, path, comment, optionType }: HeaderInfoType) {
             key={index}
             onClick={() => {
               navigate(option.path);
-              location.reload();
+              window.location.reload();
             }}
           >
             <S.PathComment>{option.title}</S.PathComment>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { StationInfoType, StationMapInfoType } from '@/@types/metro';
 import { SALES } from '@/constants/building';
@@ -51,6 +51,13 @@ function Main() {
     setArea([0, 40]);
   };
 
+  useEffect(() => {
+    console.log('추후 지도와 집 목록 조회 API 구현');
+  }, [fee, rent, area]);
+
+  useEffect(() => {
+    console.log('수정');
+  }, [window.location.href]);
   return (
     <S.Container>
       <S.LeftWrapper>
