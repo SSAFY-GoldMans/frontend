@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { TimeOption } from '@/constants/filter';
 import { SALES } from '@/constants/building';
 import SelectBox from '../SelectBox';
 
+import * as S from './index.styled';
+
 import { Close } from '@mui/icons-material';
 import { Slider } from '@mui/material';
-import * as S from './index.styled';
 
 interface Props {
   type: string;
@@ -17,6 +18,9 @@ interface Props {
   handleRentChange: (event: Event, newValue: number | number[]) => void;
   handleAreaChange: (event: Event, newValue: number | number[]) => void;
   handleFilterReset: () => void;
+  handleTimeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  goSearch: (event: React.KeyboardEvent) => void;
 }
 
 function HouseFilter({
@@ -28,9 +32,11 @@ function HouseFilter({
   handleRentChange,
   handleAreaChange,
   handleFilterReset,
+  handleQueryChange,
+  handleTimeChange,
+  goSearch,
 }: Props) {
   const [open, setOpen] = useState<boolean>(false);
-
   const handleFilterOpen = () => {
     setOpen(!open);
   };
@@ -113,9 +119,9 @@ function HouseFilter({
       <S.RowBetweenWrapper>
         {/* 검색 */}
         <S.SelectBoxWrapper>
-          <SelectBox option={TimeOption} />
+          <SelectBox option={TimeOption} handleTimeChange={handleTimeChange} />
         </S.SelectBoxWrapper>
-        <S.Input />
+        <S.Input onChange={handleQueryChange} onKeyUp={goSearch} />
       </S.RowBetweenWrapper>
       <S.Line />
       {/* 필터 상단 */}

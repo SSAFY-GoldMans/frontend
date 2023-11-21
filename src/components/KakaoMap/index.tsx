@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { StationMapInfoType } from '@/@types/metro';
 import HouseFilter from '../HouseFilter';
 
 import * as S from './index.styled';
+import { color } from '@/styles/colors';
+import MetroStationImg from '@/assets/metro.png';
 
 interface Props {
+  kakao: any;
   type: string;
   fee: number[];
   rent: number[];
@@ -13,9 +17,14 @@ interface Props {
   handleRentChange: (event: Event, newValue: number | number[]) => void;
   handleAreaChange: (event: Event, newValue: number | number[]) => void;
   handleFilterReset: () => void;
+  handleTimeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  goSearch: (event: React.KeyboardEvent) => void;
+  station: StationMapInfoType;
 }
 
 function KakaoMap({
+  kakao,
   type,
   fee,
   rent,
@@ -24,26 +33,55 @@ function KakaoMap({
   handleRentChange,
   handleAreaChange,
   handleFilterReset,
+  handleQueryChange,
+  handleTimeChange,
+  goSearch,
+  station,
 }: Props) {
   /* 카카오 지도 API  */
-  const { kakao } = window;
-  useEffect(() => {
-    let container = document.getElementById('map');
+  let map: any;
 
+  const settingKakaoMapWithStation = async () => {
+    const container = document.getElementById('map');
     const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
+      center: new kakao.maps.LatLng(station.lat, station.lng),
+      level: 4,
     };
-
-    let map = new kakao.maps.Map(container, options);
-
-    const markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-
-    const marker = new kakao.maps.Marker({
-      position: markerPosition,
+    map = await new kakao.maps.Map(container, options);
+    let stationCircle = await new kakao.maps.Circle({
+      center: new kakao.maps.LatLng(station.lat, station.lng),
+      radius: 800,
+      strokeWeight: 2,
+      strokeColor: color.blue001,
+      strokeOpacity: 1,
+      strokeStyle: 'solid',
+      fillColor: color.blue001 + 20,
+      fillOpacity: 0.7,
+    });
+    await stationCircle.setMap(map);
+    var markerImage = await new kakao.maps.MarkerImage(
+      MetroStationImg,
+      new kakao.maps.Size(33, 33),
+    );
+    const stationMarkerPosition = await new kakao.maps.LatLng(
+      station.lat,
+      station.lng,
+    );
+    const stationMarker = await new kakao.maps.Marker({
+      position: stationMarkerPosition,
+      clickable: true,
+      image: markerImage,
+    });
+    kakao.maps.event.addListener(stationMarker, 'click', function () {
+      map.setLevel(4);
+      map.panTo(stationMarkerPosition);
     });
 
-    marker.setMap(map);
+    await stationMarker.setMap(map);
+  };
+
+  useEffect(() => {
+    settingKakaoMapWithStation();
   }, []);
 
   /* 창 크기 변하는 것 */
@@ -74,6 +112,9 @@ function KakaoMap({
         handleRentChange={handleRentChange}
         handleAreaChange={handleAreaChange}
         handleFilterReset={handleFilterReset}
+        handleQueryChange={handleQueryChange}
+        handleTimeChange={handleTimeChange}
+        goSearch={goSearch}
       />
       <S.Map width={width - 700} id="map"></S.Map>
     </S.Container>

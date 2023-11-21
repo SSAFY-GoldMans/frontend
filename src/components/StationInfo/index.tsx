@@ -1,14 +1,8 @@
-import { StationInfoType } from '@/@types/metro';
+import { StationInfoResponse } from '@/@types/apis/metro';
 
 import * as S from './index.styled';
 
-function StationInfo({
-  name,
-  address,
-  time,
-  minPrice,
-  maxPrice,
-}: StationInfoType) {
+function StationInfo({ name, address, time, price }: StationInfoResponse) {
   return (
     <S.Container>
       <S.TopWrapper>
@@ -16,10 +10,8 @@ function StationInfo({
         <S.Address>{address}</S.Address>
       </S.TopWrapper>
       <S.BottomWrapper>
-        <S.Time>{time}분</S.Time>
-        <S.Price>
-          {minPrice} ~ {maxPrice}
-        </S.Price>
+        <S.Time>{time}</S.Time>
+        <S.Price>{price}</S.Price>
       </S.BottomWrapper>
     </S.Container>
   );

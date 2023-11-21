@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { MemberLoginRequest } from '@/@types/member';
+import { MemberLoginRequest } from '@/@types/apis/member';
 import { requestLogin } from '@/apis/request/member';
 import { BROWSER_PATH } from '@/constants/path';
 
@@ -8,11 +8,16 @@ import { HouseAnimation } from '@/components/Animation';
 import * as S from './index.styled';
 
 function Login() {
+  /* STATE: 사용자의 로그인 정보 */
   const [info, setInfo] = useState<MemberLoginRequest>({
     email: '',
     password: '',
   });
 
+  /**
+   * FUNCTION: 사용자 정보 수정 핸들러
+   * @param e `Input`의 `onChange`
+   */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInfo(prevInfo => ({
@@ -21,15 +26,21 @@ function Login() {
     }));
   };
 
+  /**
+   * API: 로그인을 진행한다.
+   * @param e `Form`의 `Action`
+   */
   const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     requestLogin(info)
       .then(res => {
+        /* TODO: JWT 토큰 받은 후 저장 */
         console.log(res.data);
         history.back();
       })
       .catch(error => {
+        /* TODO: 로그인 실패시 UI/UX 구현 */
         console.log('Login Failed');
       });
   };
