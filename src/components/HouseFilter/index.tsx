@@ -141,7 +141,8 @@ function HouseFilter({
         </S.FilterHandlerButton>
         <S.SelectWrapper>
           <S.SelectComment>
-            {feeMessage} · {rentMessage} · {areaMessage}
+            {feeMessage} · {type === SALES.MONTHLY ? `${rentMessage} ·` : ''}{' '}
+            {areaMessage}
           </S.SelectComment>
         </S.SelectWrapper>
       </S.RowBetweenWrapper>
@@ -175,7 +176,7 @@ function HouseFilter({
             </S.ColumnWrapper>
             <S.Line />
           </S.FilterCard>
-          {type === SALES.JEONSE ? (
+          {type === SALES.MONTHLY ? (
             <S.FilterCard>
               <S.FilterComment>월세</S.FilterComment>
               <S.FilterHeader>{rentMessage}</S.FilterHeader>

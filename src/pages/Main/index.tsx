@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { requestStationInfo } from '@/apis/request/metro';
-import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
 import { SelectStationType, StationMapInfoType } from '@/@types/metro';
+import { HouseInfoRequest, HouseInfoResponse } from '@/@types/apis/house';
+import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
+
+import { requestHouseInfo } from '@/apis/request/house';
+import { requestStationInfo } from '@/apis/request/metro';
+
+import { BROWSER_PATH } from '@/constants/path';
 import { BUILDING, SALES } from '@/constants/building';
+
 import MainLeftSide from '@/components/MainLeftSide';
 import KakaoMap from '@/components/KakaoMap';
 import MainRightSide from '@/components/MainRightSide';
 import Loading from '../Loading';
 
 import * as S from './index.styled';
-import { requestHouseInfo } from '@/apis/request/house';
-import { HouseInfoRequest, HouseInfoResponse } from '@/@types/apis/house';
 
 /* TODO: 추후 API로 삭제 */
 const station: StationMapInfoType = {
@@ -25,6 +29,7 @@ const station: StationMapInfoType = {
 function Main() {
   const { kakao } = window;
   const [searchParam] = useSearchParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
   /* STATE: 건물 옵션 */
@@ -114,6 +119,10 @@ function Main() {
       building: building.toLocaleUpperCase(),
       type: type.toLocaleUpperCase(),
     };
+    /* FUNCTION: 필터값을 유지하기 위함 */
+    navigate(
+      `${BROWSER_PATH.HOME}?query=${req.name}&time=${req.time}&building=${req.building}&type=${req.type}`,
+    );
     fetchStationInfo(req);
   };
 
@@ -173,7 +182,7 @@ function Main() {
     if (req.buildingType === '') {
       return;
     }
-    setLoading(true);
+
     requestHouseInfo(req)
       .then(res => {
         setHouseInfo(res.data.body.houseList);
@@ -182,7 +191,6 @@ function Main() {
         console.log(err);
       })
       .finally(() => {
-        setLoading(false);
         console.log(req);
       });
   };
@@ -192,7 +200,7 @@ function Main() {
     const req: HouseInfoRequest = {
       buildingType: building.toLocaleUpperCase(),
       rentType: type.toLocaleUpperCase(),
-      stationName: query,
+      stationName: selectStation.name,
       area: {
         min: area.at(0)!,
         max: area.at(1)!,
@@ -207,9 +215,7 @@ function Main() {
       },
     };
     fetchHouseInfo(req);
-  }, [time, building, rent, fee, area]);
-
-  /* TODO: 집 필터링 */
+  }, [time, building, rent, fee, area, selectStation]);
 
   /* TODO: 매물 상세 정보 조회 */
   type HouseDetailRequest = {
@@ -228,7 +234,7 @@ function Main() {
   };
   /* TODO: 중개업자 정보 상세 조회 */
 
-  /* FUNCTION: 최초 진입시 쿼리 파싱 진행 */
+  /* FUNCTION: 최초 진입시 쿼리 파싱 진행 및 역 선택 */
   useEffect(() => {
     getQueryParams();
   }, []);
@@ -241,7 +247,10 @@ function Main() {
   return (
     <S.Container>
       <S.LeftWrapper>
-        <MainLeftSide stationInfo={stationInfo} />
+        <MainLeftSide
+          stationInfo={stationInfo}
+          changeSelectStation={changeSelectStation}
+        />
       </S.LeftWrapper>
       <KakaoMap
         kakao={kakao}
@@ -261,9 +270,9 @@ function Main() {
       <S.RightWrapper>
         <MainRightSide
           houseInfo={houseInfo}
-          fromStation={''}
-          toStation={''}
-          time={''}
+          fromStation={selectStation.name}
+          toStation={station.name}
+          time={selectStation.time}
         />
       </S.RightWrapper>
     </S.Container>
