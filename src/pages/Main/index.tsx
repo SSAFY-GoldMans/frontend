@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { requestStationInfo } from '@/apis/request/metro';
 import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
-import { StationMapInfoType } from '@/@types/metro';
+import { SelectStationType, StationMapInfoType } from '@/@types/metro';
 import { BUILDING, SALES } from '@/constants/building';
 import MainLeftSide from '@/components/MainLeftSide';
 import KakaoMap from '@/components/KakaoMap';
@@ -11,6 +11,8 @@ import MainRightSide from '@/components/MainRightSide';
 import Loading from '../Loading';
 
 import * as S from './index.styled';
+import { requestHouseInfo } from '@/apis/request/house';
+import { HouseInfoRequest, HouseInfoResponse } from '@/@types/apis/house';
 
 /* TODO: 추후 API로 삭제 */
 const station: StationMapInfoType = {
@@ -93,11 +95,6 @@ function Main() {
       });
   };
 
-  /* FUNCTION: 최초 진입시 쿼리 파싱 진행 */
-  useEffect(() => {
-    getQueryParams();
-  }, []);
-
   /* FUNCTION: 최초 진입 후 쿼리 파싱 후 데이터 요청 */
   useEffect(() => {
     const req: StationInfoRequest = {
@@ -108,10 +105,6 @@ function Main() {
     };
     fetchStationInfo(req);
   }, [type, building]);
-
-  useEffect(() => {
-    console.log('추후 지도와 집 목록 조회 API 구현');
-  }, [fee, rent, area]);
 
   /* FUNCTION: 고정 필터 검색 기능 */
   const goSearch = () => {
@@ -124,12 +117,121 @@ function Main() {
     fetchStationInfo(req);
   };
 
-  /* TODO: 내가 선택한 역의 정보 */
+  /* TODO: 지하철 API 완성시 연동하기 */
+  /* STATE: 선택한 역의 정보, FUNCTION: 전달 받은 매개변수로 선택한 역의 정보 수정 */
+  const [selectStation, setSelectStation] = useState<SelectStationType>({
+    id: 1,
+    name: '강남역',
+    time: '1분',
+  });
+  const changeSelectStation = ({ id, name, time }: SelectStationType) => {
+    setSelectStation({
+      id,
+      name,
+      time,
+    });
+  };
+
   /* TODO: 카카오 지하철 좌표 조회 */
+  type KakaoMetroMapResponse = {
+    id: number; // 지하철 Id
+    name: string; // 지하철 이름
+    lng: number;
+    lat: number;
+  };
+
   /* TODO: 카카오 집 좌표 조회 */
-  /* TODO: 집 정보 조회 */
-  /* TODO: 집 상세 정보 조회 */
+  type KakaoHouseMapRequest = {
+    buildingType: string;
+    rentType: string;
+    stationName: string;
+    price: {
+      max: number;
+      min: number;
+    };
+    rent: {
+      max: number;
+      min: number;
+    };
+    area: {
+      max: number;
+      min: number;
+    };
+  };
+  type KakaoHouseMapResponse = {
+    id: number; // 건물 Id
+    name: string; // 건물 이름
+    lng: number;
+    lat: number;
+  };
+
+  /* STATE: 집 목록 */
+  const [houseInfo, setHouseInfo] = useState<HouseInfoResponse[]>([]);
+
+  /* API: 집 목록 조회 */
+  const fetchHouseInfo = (req: HouseInfoRequest) => {
+    if (req.buildingType === '') {
+      return;
+    }
+    setLoading(true);
+    requestHouseInfo(req)
+      .then(res => {
+        setHouseInfo(res.data.body.houseList);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+        console.log(req);
+      });
+  };
+
+  /* FUNCTION: 집 목록 조회 */
+  useEffect(() => {
+    const req: HouseInfoRequest = {
+      buildingType: building.toLocaleUpperCase(),
+      rentType: type.toLocaleUpperCase(),
+      stationName: query,
+      area: {
+        min: area.at(0)!,
+        max: area.at(1)!,
+      },
+      rent: {
+        min: rent.at(0)!,
+        max: rent.at(1)!,
+      },
+      fee: {
+        min: fee.at(0)!,
+        max: fee.at(1)!,
+      },
+    };
+    fetchHouseInfo(req);
+  }, [time, building, rent, fee, area]);
+
+  /* TODO: 집 필터링 */
+
+  /* TODO: 매물 상세 정보 조회 */
+  type HouseDetailRequest = {
+    id: number;
+    type: string;
+  };
+
+  type HouseDetailResponse = {
+    id: number; // 매물 Id
+    img: string; // 건물 사진 (아무거나 보내셈)
+    name: string; // 건물 이름
+    price: string; // 매물 가격
+    area: string; // 전용 면적
+    floor: number; // 매물 층수
+    address: string; // 건물 주소
+  };
   /* TODO: 중개업자 정보 상세 조회 */
+
+  /* FUNCTION: 최초 진입시 쿼리 파싱 진행 */
+  useEffect(() => {
+    getQueryParams();
+  }, []);
 
   /* FUNCTION: 데이터를 호출하고 있을 경우 로딩창을 보여줌 */
   if (loading) {
@@ -158,9 +260,10 @@ function Main() {
       />
       <S.RightWrapper>
         <MainRightSide
-          startStationName={'강남역'}
-          nowStationName={query}
-          time={1}
+          houseInfo={houseInfo}
+          fromStation={''}
+          toStation={''}
+          time={''}
         />
       </S.RightWrapper>
     </S.Container>

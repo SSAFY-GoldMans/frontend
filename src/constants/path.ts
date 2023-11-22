@@ -6,6 +6,9 @@ const API_PATH = {
   METRO: {
     STATION_INFO: '/api/near',
   },
+  HOUSE: {
+    INFO: '/house',
+  },
 };
 
 const BROWSER_PATH = {

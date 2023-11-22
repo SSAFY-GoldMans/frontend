@@ -48,7 +48,8 @@ function KakaoMap({
       level: 4,
     };
     map = await new kakao.maps.Map(container, options);
-    let stationCircle = await new kakao.maps.Circle({
+    map.setMaxLevel(6);
+    let stationCircle = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(station.lat, station.lng),
       radius: 800,
       strokeWeight: 2,
@@ -58,7 +59,7 @@ function KakaoMap({
       fillColor: color.blue001 + 20,
       fillOpacity: 0.7,
     });
-    await stationCircle.setMap(map);
+    stationCircle.setMap(map);
     var markerImage = await new kakao.maps.MarkerImage(
       MetroStationImg,
       new kakao.maps.Size(33, 33),

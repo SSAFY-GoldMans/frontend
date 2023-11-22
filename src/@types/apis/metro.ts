@@ -12,6 +12,8 @@ type StationInfoResponse = {
   time: string;
   address: string;
   price: string;
+  lat: number;
+  lng: number;
 };
 
 export { StationInfoRequest, StationInfoResponse };
