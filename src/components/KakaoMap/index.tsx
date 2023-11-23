@@ -23,6 +23,7 @@ interface Props {
   handleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   goSearch: () => void;
   stations: StationInfoResponse[];
+  selectStation: SelectStationType;
   changeSelectStation: ({ id, name, time }: SelectStationType) => void;
   houseInfo: HouseInfoResponse[];
 }
@@ -41,16 +42,20 @@ function KakaoMap({
   handleTimeChange,
   goSearch,
   stations,
+  selectStation,
   changeSelectStation,
   houseInfo,
 }: Props) {
   /* 카카오 지도 API  */
   let map: any;
 
-  const settingKakaoMapWithStation = async () => {
+  const settingKakaoMapWithStation = async (idx: number) => {
     const container = document.getElementById('map');
     const options = {
-      center: new kakao.maps.LatLng(stations.at(0)?.lat, stations.at(0)?.lng),
+      center: new kakao.maps.LatLng(
+        stations.at(idx)?.lat,
+        stations.at(idx)?.lng,
+      ),
       level: 4,
     };
     map = await new kakao.maps.Map(container, options);
@@ -62,7 +67,10 @@ function KakaoMap({
 
     map.setMaxLevel(6);
     let stationCircle = new kakao.maps.Circle({
-      center: new kakao.maps.LatLng(stations.at(0)?.lat, stations.at(0)?.lng),
+      center: new kakao.maps.LatLng(
+        stations.at(idx)?.lat,
+        stations.at(idx)?.lng,
+      ),
       radius: 800,
       strokeWeight: 2,
       strokeColor: color.yellow001,
@@ -85,7 +93,7 @@ function KakaoMap({
       MetroStationImg,
       new kakao.maps.Size(33, 33),
     );
-    stations.map((station: StationInfoResponse) => {
+    stations.forEach((station: StationInfoResponse, idx: number) => {
       const markerPosition = new kakao.maps.LatLng(station.lat, station.lng);
       const stationMarker = new kakao.maps.Marker({
         position: markerPosition,
@@ -94,7 +102,7 @@ function KakaoMap({
       });
       kakao.maps.event.addListener(stationMarker, 'click', function () {
         map.panTo(markerPosition);
-        selectStationByMarker(station, stationCircle);
+        selectStationByMarker(idx, station, stationCircle);
       });
       stationMarker.setMap(map);
     });
@@ -102,11 +110,13 @@ function KakaoMap({
 
   /* FUNCTION: 선택한 마커의 원 위치를 수정  */
   const selectStationByMarker = (
+    idx: number,
     station: StationInfoResponse,
     stationCircle: any,
   ) => {
     stationCircle.setPosition(new kakao.maps.LatLng(station.lat, station.lng));
     changeSelectStation({
+      idx,
       id: station.id,
       name: station.name,
       time: station.time,
@@ -114,11 +124,7 @@ function KakaoMap({
   };
 
   useEffect(() => {
-    settingKakaoMapWithStation();
-  }, []);
-
-  useEffect(() => {
-    drawHouseMarker(houseInfo);
+    settingKakaoMapWithStation(selectStation.idx);
   }, [houseInfo]);
 
   /* FUNCTION: 선택한 역 주변의 집의 마커를 그림 */
@@ -134,13 +140,9 @@ function KakaoMap({
 
     const houseMarkers: any[] = [];
 
-    house.map((info: HouseInfoResponse) => {
-      const markerPosition = new kakao.maps.LatLng(
-        info.position.lat,
-        info.position.lng,
-      );
+    house.forEach((info: HouseInfoResponse) => {
       const houseMarker = new kakao.maps.Marker({
-        position: markerPosition,
+        position: new kakao.maps.LatLng(info.position.lat, info.position.lng),
         clickable: true,
       });
       kakao.maps.event.addListener(houseMarker, 'click', function () {
@@ -149,9 +151,10 @@ function KakaoMap({
       houseMarkers.push(houseMarker);
     });
 
-    houseMarkers.map((houseMarker: any) => {
+    houseMarkers.forEach((houseMarker: any) => {
       houseMarker.setMap(map);
     });
+
     setHouseMarkersState(houseMarkers);
   };
 

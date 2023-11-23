@@ -16,6 +16,7 @@ type StationMapInfoType = {
 
 /* `/home` 오른쪽 상단 */
 type SelectStationType = {
+  idx: number;
   id: number;
   name: string;
   time: string;

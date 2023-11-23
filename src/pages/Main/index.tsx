@@ -99,7 +99,7 @@ function Main() {
       type: type.toLocaleUpperCase(),
     };
     fetchStationInfo(req);
-    changeSelectStation({ id: -1, name: req.name, time: `0분` });
+    changeSelectStation({ idx: 0, id: -1, name: req.name, time: `0분` });
   }, [type, building]);
 
   /* FUNCTION: 고정 필터 검색 기능 */
@@ -119,12 +119,14 @@ function Main() {
 
   /* STATE: 선택한 역의 정보, FUNCTION: 전달 받은 매개변수로 선택한 역의 정보 수정 */
   const [selectStation, setSelectStation] = useState<SelectStationType>({
+    idx: 0,
     id: -1,
     name: '',
     time: '0분',
   });
-  const changeSelectStation = ({ id, name, time }: SelectStationType) => {
+  const changeSelectStation = ({ idx, id, name, time }: SelectStationType) => {
     setSelectStation({
+      idx,
       id,
       name,
       time,
@@ -234,6 +236,7 @@ function Main() {
         handleTimeChange={handleTimeChange}
         goSearch={goSearch}
         stations={stationInfo}
+        selectStation={selectStation}
         changeSelectStation={station => changeSelectStation(station)}
         houseInfo={houseInfo}
       />

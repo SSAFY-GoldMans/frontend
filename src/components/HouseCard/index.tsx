@@ -29,11 +29,11 @@ function HouseCard({ info, houseInfoHandler, handleHouseDetailChange }: Props) {
         <S.HouseImg src={getRandomImageUrl()} />
         <S.InfoWrapper>
           <S.Name>{info.position.name}</S.Name>
+          <S.Info>{info.address}</S.Info>
           <S.Price>{info.price}</S.Price>
           <S.Info>
             {info.area} · {info.floor}층
           </S.Info>
-          <S.Info>{info.address}</S.Info>
         </S.InfoWrapper>
       </S.Wrapper>
       <S.Line />
