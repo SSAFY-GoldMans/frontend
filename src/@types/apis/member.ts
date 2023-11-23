@@ -11,4 +11,9 @@ type MemberSignupRequest = {
   role: string;
 };
 
-export { MemberLoginRequest, MemberSignupRequest };
+type MemberLoginResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export { MemberLoginRequest, MemberSignupRequest, MemberLoginResponse };
