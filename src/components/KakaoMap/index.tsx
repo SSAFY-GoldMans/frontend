@@ -65,10 +65,10 @@ function KakaoMap({
       center: new kakao.maps.LatLng(stations.at(0)?.lat, stations.at(0)?.lng),
       radius: 800,
       strokeWeight: 2,
-      strokeColor: color.blue001,
+      strokeColor: color.yellow001,
       strokeOpacity: 1,
       strokeStyle: 'solid',
-      fillColor: color.blue001 + 20,
+      fillColor: color.yellow001 + 20,
       fillOpacity: 0.7,
     });
     stationCircle.setMap(map);

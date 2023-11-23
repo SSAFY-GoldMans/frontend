@@ -17,7 +17,7 @@ const BuildingInfoWrapper = styled.div`
   height: 100px;
 
   &:hover {
-    color: ${color.blue001};
+    color: ${color.yellow001};
   }
 `;
 

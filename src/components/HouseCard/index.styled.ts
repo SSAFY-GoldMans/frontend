@@ -15,7 +15,7 @@ const Container = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: ${color.blue001 + 10};
+    background-color: ${color.yellow001 + 10};
   }
 `;
 

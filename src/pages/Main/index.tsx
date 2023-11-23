@@ -161,6 +161,7 @@ function Main() {
   /* STATE: 집 목록 */
   const [houseInfo, setHouseInfo] = useState<HouseInfoResponse[]>([]);
 
+  const handleHouseInfoChange = () => {};
   /* API: 집 목록 조회 */
   const fetchHouseInfo = async (req: HouseInfoRequest) => {
     if (req.buildingType === '' || req.stationName === '') {

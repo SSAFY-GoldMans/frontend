@@ -28,7 +28,7 @@ const Button = styled.button`
   width: 200px;
   height: 52px;
 
-  background-color: ${color.blue001};
+  background-color: ${color.yellow001};
   color: ${color.white001};
 
   border-radius: 10px;
@@ -40,7 +40,7 @@ const StyledButton = styled(Link)`
   width: 200px;
   height: 52px;
 
-  background-color: ${color.blue001};
+  background-color: ${color.yellow001};
   color: ${color.white001};
 
   border-radius: 10px;
