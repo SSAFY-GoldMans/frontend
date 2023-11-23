@@ -2,10 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { SelectStationType, StationMapInfoType } from '@/@types/metro';
-import { HouseInfoRequest, HouseInfoResponse } from '@/@types/apis/house';
+import {
+  HouseDetailRequest,
+  HouseDetailResponse,
+  HouseInfoRequest,
+  HouseInfoResponse,
+} from '@/@types/apis/house';
 import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
 
-import { requestHouseInfo } from '@/apis/request/house';
+import { requestHouseDetail, requestHouseInfo } from '@/apis/request/house';
 import { requestStationInfo } from '@/apis/request/metro';
 
 import { BROWSER_PATH } from '@/constants/path';
@@ -133,37 +138,9 @@ function Main() {
     });
   };
 
-  /* TODO: 카카오 지하철 좌표 조회 */
-
-  /* TODO: 카카오 집 좌표 조회 */
-  type KakaoHouseMapRequest = {
-    buildingType: string;
-    rentType: string;
-    stationName: string;
-    price: {
-      max: number;
-      min: number;
-    };
-    rent: {
-      max: number;
-      min: number;
-    };
-    area: {
-      max: number;
-      min: number;
-    };
-  };
-  type KakaoHouseMapResponse = {
-    id: number; // 건물 Id
-    name: string; // 건물 이름
-    lng: number;
-    lat: number;
-  };
-
   /* STATE: 집 목록 */
   const [houseInfo, setHouseInfo] = useState<HouseInfoResponse[]>([]);
 
-  const handleHouseInfoChange = () => {};
   /* API: 집 목록 조회 */
   const fetchHouseInfo = async (req: HouseInfoRequest) => {
     if (req.buildingType === '' || req.stationName === '') {
@@ -209,6 +186,37 @@ function Main() {
 
   /* TODO: 중개업자 정보 상세 조회 */
 
+  /* FUNCTION: 집 상세 조회 */
+  /* STATE: 집 상세 보기 여부, FUNCTION: 집 상세 보기 토글 */
+  const [isHouseInfoVisible, setIsHouseInfoVisible] = useState<boolean>(false);
+  const handleHouseCardVisible = () => {
+    setIsHouseInfoVisible(!isHouseInfoVisible);
+  };
+
+  /* STATE: 집 상세 보기 요청, FUNCTION: 집 상세 보기 변수 수정 */
+  const [houseDetailReq, setHouseDetailReq] = useState<HouseDetailRequest>();
+  const handleHouseDetailChange = (id: number, type: string) => {
+    setHouseDetailReq({ id, type });
+  };
+
+  /* STATE: 집 상세 보기 */
+  const [houseDetail, setHouseDetail] = useState<HouseDetailResponse>();
+
+  /* API: 집 상세 정보 요청 */
+  const fetchHouseDetail = async (req: HouseDetailRequest) => {
+    if (req === undefined) {
+      return;
+    }
+    await requestHouseDetail(req)
+      .then(res => {
+        setHouseDetail(res.data.body);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
+
   /* FUNCTION: 데이터를 호출하고 있을 경우 로딩창을 보여줌 */
   if (loading) {
     return <Loading />;
@@ -239,6 +247,12 @@ function Main() {
         selectStation={selectStation}
         changeSelectStation={station => changeSelectStation(station)}
         houseInfo={houseInfo}
+        handleHouseDetailChange={handleHouseDetailChange}
+        fetchHouseDetail={fetchHouseDetail}
+        handleHouseCardVisible={handleHouseCardVisible}
+        houseDetail={houseDetail!}
+        houseDetailReq={houseDetailReq!}
+        isHouseInfoVisible={isHouseInfoVisible}
       />
       <S.RightWrapper>
         <MainRightSide
@@ -246,6 +260,12 @@ function Main() {
           fromStation={selectStation.name}
           toStation={query}
           time={selectStation.time}
+          fetchHouseDetail={fetchHouseDetail}
+          handleHouseCardVisible={handleHouseCardVisible}
+          handleHouseDetailChange={handleHouseDetailChange}
+          houseDetail={houseDetail!}
+          houseDetailReq={houseDetailReq!}
+          isHouseInfoVisible={isHouseInfoVisible}
         />
       </S.RightWrapper>
     </S.Container>

@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
 import { StationInfoResponse } from '@/@types/apis/metro';
-import { HouseInfoResponse } from '@/@types/apis/house';
+import {
+  HouseDetailRequest,
+  HouseDetailResponse,
+  HouseInfoResponse,
+} from '@/@types/apis/house';
 import MetroStationImg from '@/assets/metro.png';
 import { SelectStationType } from '@/@types/metro';
 import HouseFilter from '../HouseFilter';
 
 import * as S from './index.styled';
 import { color } from '@/styles/colors';
+import { useSearchParams } from 'react-router-dom';
 
 interface Props {
   kakao: any;
@@ -26,6 +31,13 @@ interface Props {
   selectStation: SelectStationType;
   changeSelectStation: ({ id, name, time }: SelectStationType) => void;
   houseInfo: HouseInfoResponse[];
+
+  isHouseInfoVisible: boolean;
+  handleHouseCardVisible: () => void;
+  houseDetailReq: HouseDetailRequest;
+  handleHouseDetailChange: (id: number, type: string) => void;
+  houseDetail: HouseDetailResponse;
+  fetchHouseDetail: (req: HouseDetailRequest) => void;
 }
 
 function KakaoMap({
@@ -45,9 +57,12 @@ function KakaoMap({
   selectStation,
   changeSelectStation,
   houseInfo,
+  handleHouseCardVisible,
+  handleHouseDetailChange,
 }: Props) {
   /* 카카오 지도 API  */
   let map: any;
+  const [searchParam] = useSearchParams();
 
   const settingKakaoMapWithStation = async (idx: number) => {
     const container = document.getElementById('map');
@@ -141,12 +156,17 @@ function KakaoMap({
     const houseMarkers: any[] = [];
 
     house.forEach((info: HouseInfoResponse) => {
+      const handlerHouseInfo = async () => {
+        const type: string = searchParam.get('type')!.toLocaleUpperCase();
+        await handleHouseDetailChange(info.id, type);
+        handleHouseCardVisible();
+      };
       const houseMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(info.position.lat, info.position.lng),
         clickable: true,
       });
       kakao.maps.event.addListener(houseMarker, 'click', function () {
-        console.log('marker click');
+        handlerHouseInfo();
       });
       houseMarkers.push(houseMarker);
     });
