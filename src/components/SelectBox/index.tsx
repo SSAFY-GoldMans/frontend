@@ -1,4 +1,5 @@
 import React from 'react';
+
 import * as S from './index.styled';
 
 interface Props {
@@ -16,7 +17,7 @@ function SelectBox({ option, handleTimeChange }: Props) {
           </S.StyledOption>
         ))}
       </S.StyledSelect>
-      <S.ArrowIcon></S.ArrowIcon>
+      <S.ArrowIcon />
     </S.Container>
   );
 }

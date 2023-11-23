@@ -14,4 +14,11 @@ type StationMapInfoType = {
   lat: number; // x좌표
 };
 
-export { StationInfoType, StationMapInfoType };
+/* `/home` 오른쪽 상단 */
+type SelectStationType = {
+  id: number;
+  name: string;
+  time: string;
+};
+
+export { StationInfoType, StationMapInfoType, SelectStationType };

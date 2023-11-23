@@ -1,8 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { AgentInfoType } from '@/@types/agent';
-import { BuildingInfoType } from '@/@types/building';
+import { HouseDetailResponse } from '@/@types/apis/house';
 
 import { SnackbarOrigin } from '@mui/material/Snackbar';
 
@@ -14,19 +13,16 @@ interface State extends SnackbarOrigin {
 
 interface Props {
   houseInfoHandler: () => void;
-  building: BuildingInfoType;
+  houseDetail: HouseDetailResponse;
   agent: AgentInfoType;
 }
 
-function HouseInfo({ houseInfoHandler, building, agent }: Props) {
-  const navigate = useNavigate();
-
+function HouseInfo({ houseInfoHandler, houseDetail, agent }: Props) {
   const handleBack = () => {
     houseInfoHandler();
-    navigate(``);
   };
 
-  /* Snack Bar */
+  /* STATE: Snack Bar */
   const [state, setState] = React.useState<State>({
     open: false,
     vertical: 'top',
@@ -42,23 +38,26 @@ function HouseInfo({ houseInfoHandler, building, agent }: Props) {
     setState({ ...state, open: false });
   };
 
+  console.log(houseDetail);
+
   return (
     <S.Container>
       <S.BackButton onClick={handleBack}>뒤로가기</S.BackButton>
-      <S.Img src={building.imgPath}></S.Img>
+      {/* <S.Img src={houseDetail.img}></S.Img> */}
+      <S.Img src={'?'}></S.Img>
       <S.Wrapper>
         <S.Header>건물정보</S.Header>
         <S.ColumnWrapper>
           <S.BoldComment>가격정보</S.BoldComment>
-          <S.Comment>{building.price}</S.Comment>
+          <S.Comment>{houseDetail.price}</S.Comment>
         </S.ColumnWrapper>
         <S.ColumnWrapper>
           <S.BoldComment>전용면적</S.BoldComment>
-          <S.Comment>{building.area}</S.Comment>
+          <S.Comment>{houseDetail.area}</S.Comment>
         </S.ColumnWrapper>
         <S.ColumnWrapper>
           <S.BoldComment>해당층</S.BoldComment>
-          <S.Comment>{building.floor}층</S.Comment>
+          <S.Comment>{houseDetail.floor}층</S.Comment>
         </S.ColumnWrapper>
       </S.Wrapper>
       <S.Wrapper>
