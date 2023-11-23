@@ -21,7 +21,7 @@ function HouseCard({ info, houseInfoHandler, handleHouseDetailChange }: Props) {
       <S.Wrapper>
         <S.HouseImg src={info.img} />
         <S.InfoWrapper>
-          <S.Name>{info.name}</S.Name>
+          <S.Name>{info.position.name}</S.Name>
           <S.Price>{info.price}</S.Price>
           <S.Info>
             {info.area} · {info.floor}층

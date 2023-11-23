@@ -171,7 +171,7 @@ function Main() {
 
   /* API: 집 목록 조회 */
   const fetchHouseInfo = async (req: HouseInfoRequest) => {
-    if (req.buildingType === '') {
+    if (req.buildingType === '' || req.stationName === '') {
       return;
     }
 
@@ -182,9 +182,7 @@ function Main() {
       .catch(err => {
         console.log(err);
       })
-      .finally(() => {
-        console.log(req);
-      });
+      .finally(() => {});
   };
 
   /* FUNCTION: 집 목록 조회 */
@@ -209,15 +207,12 @@ function Main() {
     fetchHouseInfo(req);
   }, [time, building, rent, fee, area, selectStation]);
 
-  /* API: 매물 상세 정보 조회 */
-  const fetchHouseDetail = () => {};
-
-  /* TODO: 중개업자 정보 상세 조회 */
-
   /* FUNCTION: 최초 진입시 쿼리 파싱 진행 및 역 선택 */
   useEffect(() => {
     getQueryParams();
   }, []);
+
+  /* TODO: 중개업자 정보 상세 조회 */
 
   /* FUNCTION: 데이터를 호출하고 있을 경우 로딩창을 보여줌 */
   if (loading) {
@@ -247,6 +242,7 @@ function Main() {
         goSearch={goSearch}
         stations={stationInfo}
         changeSelectStation={station => changeSelectStation(station)}
+        houseInfo={houseInfo}
       />
       <S.RightWrapper>
         <MainRightSide

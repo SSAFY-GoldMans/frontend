@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { StationInfoResponse } from '@/@types/apis/metro';
+import { HouseInfoResponse } from '@/@types/apis/house';
 import MetroStationImg from '@/assets/metro.png';
 import { SelectStationType } from '@/@types/metro';
 import HouseFilter from '../HouseFilter';
@@ -23,6 +24,7 @@ interface Props {
   goSearch: () => void;
   stations: StationInfoResponse[];
   changeSelectStation: ({ id, name, time }: SelectStationType) => void;
+  houseInfo: HouseInfoResponse[];
 }
 
 function KakaoMap({
@@ -40,6 +42,7 @@ function KakaoMap({
   goSearch,
   stations,
   changeSelectStation,
+  houseInfo,
 }: Props) {
   /* 카카오 지도 API  */
   let map: any;
@@ -68,6 +71,7 @@ function KakaoMap({
     });
     stationCircle.setMap(map);
     drawStationMarker(stations, stationCircle);
+    drawHouseMarker(houseInfo);
   };
 
   /* FUNCTION: 지하철 역의 마커를 그린다  */
@@ -111,9 +115,48 @@ function KakaoMap({
     settingKakaoMapWithStation();
   }, []);
 
-  /* 창 크기 변하는 것 */
-  const [width, setWidth] = useState<number>(window.innerWidth);
+  useEffect(() => {
+    drawHouseMarker(houseInfo);
+  }, [houseInfo]);
 
+  /* FUNCTION: 선택한 역 주변의 집의 마커를 그림 */
+  const [houseMarkersState, setHouseMarkersState] = useState<any[]>([]);
+  const drawHouseMarker = (house: HouseInfoResponse[]) => {
+    if (house === undefined) {
+      return;
+    }
+
+    // TODO: 마커 삭제 기능
+    houseMarkersState.map((houseMarker: any) => {
+      houseMarker.setMap(null);
+    });
+
+    const houseMarkers: any[] = [];
+
+    house.map((info: HouseInfoResponse) => {
+      const markerPosition = new kakao.maps.LatLng(
+        info.position.lat,
+        info.position.lng,
+      );
+      const houseMarker = new kakao.maps.Marker({
+        position: markerPosition,
+        clickable: true,
+      });
+      kakao.maps.event.addListener(houseMarker, 'click', function () {
+        console.log('marker click');
+      });
+      houseMarkers.push(houseMarker);
+    });
+
+    houseMarkers.map((houseMarker: any) => {
+      houseMarker.setMap(map);
+      console.log(houseMarker);
+    });
+    setHouseMarkersState(houseMarkers);
+  };
+
+  /* FUNCTION: 창 크기 변하는 것 */
+  const [width, setWidth] = useState<number>(window.innerWidth);
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);

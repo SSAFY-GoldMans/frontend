@@ -30,7 +30,6 @@ const Logo = styled.h1`
 `;
 
 const Img = styled.img`
-  width: 300px;
   height: 50px;
 `;
 
@@ -40,7 +39,7 @@ const BuildingWrapper = styled.div`
   align-items: center;
 
   flex-direction: row;
-  margin-left: 100px;
+  margin-left: 130px;
   width: 100%;
 `;
 
