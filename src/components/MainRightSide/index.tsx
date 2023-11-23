@@ -14,7 +14,6 @@ import * as S from './index.styled';
 import { BuildingInfoType } from '@/@types/building';
 import { AgentInfoType } from '@/@types/agent';
 import { requestHouseDetail } from '@/apis/request/house';
-import Loading from '@/pages/Loading';
 
 /* TODO: 후추 API로 분리 */
 const info2: BuildingInfoType = {

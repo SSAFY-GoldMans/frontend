@@ -113,6 +113,7 @@ function Main() {
       type: type.toLocaleUpperCase(),
     };
     fetchStationInfo(req);
+    changeSelectStation({ id: -1, name: req.name, time: `0분` });
   }, [type, building]);
 
   /* FUNCTION: 고정 필터 검색 기능 */
@@ -130,12 +131,11 @@ function Main() {
     fetchStationInfo(req);
   };
 
-  /* TODO: 지하철 API 완성시 연동하기 */
   /* STATE: 선택한 역의 정보, FUNCTION: 전달 받은 매개변수로 선택한 역의 정보 수정 */
   const [selectStation, setSelectStation] = useState<SelectStationType>({
-    id: 1,
-    name: '강남역',
-    time: '1분',
+    id: -1,
+    name: '',
+    time: '0분',
   });
   const changeSelectStation = ({ id, name, time }: SelectStationType) => {
     setSelectStation({
@@ -146,12 +146,6 @@ function Main() {
   };
 
   /* TODO: 카카오 지하철 좌표 조회 */
-  type KakaoMetroMapResponse = {
-    id: number; // 지하철 Id
-    name: string; // 지하철 이름
-    lng: number;
-    lat: number;
-  };
 
   /* TODO: 카카오 집 좌표 조회 */
   type KakaoHouseMapRequest = {
