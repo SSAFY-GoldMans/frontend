@@ -14,7 +14,6 @@ function Layout({ children }: PageProps) {
     <S.Container>
       <Header />
       <S.Content>{children}</S.Content>
-      <Footer />
     </S.Container>
   );
 }

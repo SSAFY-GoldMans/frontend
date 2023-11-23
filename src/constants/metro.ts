@@ -1,64 +1,67 @@
-const LINE = {
-  1: {
-    name: '1호선',
+const LINE = [
+  {
+    id: 1,
+    name: '1',
     color: '#263c96',
   },
-  2: {
-    name: '2호선',
+  {
+    id: 2,
+    name: '2',
     color: '#3CB44A',
   },
-  3: {
-    name: '3호선',
+  {
+    id: 3,
+    name: '3',
     color: '#F06E00',
   },
-  4: {
-    name: '4호선',
+  {
+    id: 4,
+    name: '4',
     color: '#2C9EDE',
   },
-  5: {
-    name: '5호선',
+  {
+    id: 5,
+    name: '5',
     color: '#8936E0',
   },
-  6: {
-    name: '6호선',
+  {
+    id: 6,
+    name: '6',
     color: '#697215',
   },
-  7: {
-    name: '7호선',
-    color: '#687114',
-  },
-  8: {
-    name: '8호선',
-    color: '#E51E6E',
-  },
-  9: {
-    name: '9호선',
-    color: '#D1A62C',
-  },
-  10: {
-    name: '경의중앙선',
+  { id: 7, name: '7', color: '#687114' },
+  { id: 8, name: '8', color: '#E51E6E' },
+  { id: 9, name: '9', color: '#D1A62C' },
+  {
+    id: 10,
+    name: ' 경의중앙 ',
     color: '#7CC4A5',
   },
-  11: {
-    name: '경춘선',
+  {
+    id: 11,
+    name: ' 경춘 ',
     color: '#08AF7B',
   },
-  12: {
-    name: '공항선',
+  {
+    id: 12,
+    name: ' 공항 ',
     color: '#73B6E4',
   },
-  15: {
-    name: '수인분당선',
+  {
+    id: 15,
+    name: ' 수인분당 ',
     color: '#EBA900',
   },
-  16: {
-    name: '신림선',
+  {
+    id: 16,
+    name: '신림',
     color: '#4E67A5',
   },
-  17: {
-    name: '신분당선',
+  {
+    id: 17,
+    name: `신분당`,
     color: '#A71E31',
   },
-};
+];
 
 export { LINE };

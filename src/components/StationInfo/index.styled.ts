@@ -28,7 +28,7 @@ const TopWrapper = styled.div`
 
 const StationName = styled.h2`
   font-size: 1.4rem;
-  margin: 0;
+  margin: 0 10px 0 0;
 `;
 
 const Address = styled.p`
@@ -56,6 +56,28 @@ const Price = styled.p`
   font-size: 16px;
 `;
 
+const Line = styled.p<{ color: string }>`
+  background-color: ${props => props.color};
+  min-width: 24px;
+  height: 24px;
+  font-size: 16px;
+  border-radius: 100px;
+
+  margin-left: 5px;
+  padding: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+`;
+
+const StationWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export {
   Container,
   TopWrapper,
@@ -64,4 +86,6 @@ export {
   BottomWrapper,
   Time,
   Price,
+  Line,
+  StationWrapper,
 };
