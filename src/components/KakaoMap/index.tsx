@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
-import { StationMapInfoType } from '@/@types/metro';
+import { StationInfoResponse } from '@/@types/apis/metro';
+import {
+  HouseDetailRequest,
+  HouseDetailResponse,
+  HouseInfoResponse,
+} from '@/@types/apis/house';
+import MetroStationImg from '@/assets/metro.png';
+import { SelectStationType } from '@/@types/metro';
 import HouseFilter from '../HouseFilter';
 
 import * as S from './index.styled';
 import { color } from '@/styles/colors';
-import MetroStationImg from '@/assets/metro.png';
+import { useSearchParams } from 'react-router-dom';
 
 interface Props {
   kakao: any;
@@ -20,7 +27,17 @@ interface Props {
   handleTimeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   handleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   goSearch: () => void;
-  station: StationMapInfoType;
+  stations: StationInfoResponse[];
+  selectStation: SelectStationType;
+  changeSelectStation: ({ id, name, time }: SelectStationType) => void;
+  houseInfo: HouseInfoResponse[];
+
+  isHouseInfoVisible: boolean;
+  handleHouseCardVisible: () => void;
+  houseDetailReq: HouseDetailRequest;
+  handleHouseDetailChange: (id: number, type: string) => void;
+  houseDetail: HouseDetailResponse;
+  fetchHouseDetail: (req: HouseDetailRequest) => void;
 }
 
 function KakaoMap({
@@ -36,58 +53,133 @@ function KakaoMap({
   handleQueryChange,
   handleTimeChange,
   goSearch,
-  station,
+  stations,
+  selectStation,
+  changeSelectStation,
+  houseInfo,
+  handleHouseCardVisible,
+  handleHouseDetailChange,
 }: Props) {
   /* 카카오 지도 API  */
   let map: any;
+  const [searchParam] = useSearchParams();
 
-  const settingKakaoMapWithStation = async () => {
+  const settingKakaoMapWithStation = async (idx: number) => {
     const container = document.getElementById('map');
     const options = {
-      center: new kakao.maps.LatLng(station.lat, station.lng),
+      center: new kakao.maps.LatLng(
+        stations.at(idx)?.lat,
+        stations.at(idx)?.lng,
+      ),
       level: 4,
     };
     map = await new kakao.maps.Map(container, options);
+    /* FUNCTION: 지도 오른쪽에 줌 컨트롤이 표시되도록 지도에 컨트롤을 추가한다. */
+    let mapTypeControl = new kakao.maps.MapTypeControl();
+    let zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+    map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
+
     map.setMaxLevel(6);
     let stationCircle = new kakao.maps.Circle({
-      center: new kakao.maps.LatLng(station.lat, station.lng),
+      center: new kakao.maps.LatLng(
+        stations.at(idx)?.lat,
+        stations.at(idx)?.lng,
+      ),
       radius: 800,
       strokeWeight: 2,
-      strokeColor: color.blue001,
+      strokeColor: color.yellow001,
       strokeOpacity: 1,
       strokeStyle: 'solid',
-      fillColor: color.blue001 + 20,
+      fillColor: color.yellow001 + 20,
       fillOpacity: 0.7,
     });
     stationCircle.setMap(map);
+    drawStationMarker(stations, stationCircle);
+    drawHouseMarker(houseInfo);
+  };
+
+  /* FUNCTION: 지하철 역의 마커를 그린다  */
+  const drawStationMarker = async (
+    stations: StationInfoResponse[],
+    stationCircle: any,
+  ) => {
     var markerImage = await new kakao.maps.MarkerImage(
       MetroStationImg,
       new kakao.maps.Size(33, 33),
     );
-    const stationMarkerPosition = await new kakao.maps.LatLng(
-      station.lat,
-      station.lng,
-    );
-    const stationMarker = await new kakao.maps.Marker({
-      position: stationMarkerPosition,
-      clickable: true,
-      image: markerImage,
+    stations.forEach((station: StationInfoResponse, idx: number) => {
+      const markerPosition = new kakao.maps.LatLng(station.lat, station.lng);
+      const stationMarker = new kakao.maps.Marker({
+        position: markerPosition,
+        clickable: true,
+        image: markerImage,
+      });
+      kakao.maps.event.addListener(stationMarker, 'click', function () {
+        map.panTo(markerPosition);
+        selectStationByMarker(idx, station, stationCircle);
+      });
+      stationMarker.setMap(map);
     });
-    kakao.maps.event.addListener(stationMarker, 'click', function () {
-      map.setLevel(4);
-      map.panTo(stationMarkerPosition);
-    });
+  };
 
-    await stationMarker.setMap(map);
+  /* FUNCTION: 선택한 마커의 원 위치를 수정  */
+  const selectStationByMarker = (
+    idx: number,
+    station: StationInfoResponse,
+    stationCircle: any,
+  ) => {
+    stationCircle.setPosition(new kakao.maps.LatLng(station.lat, station.lng));
+    changeSelectStation({
+      idx,
+      id: station.id,
+      name: station.name,
+      time: station.time,
+    });
   };
 
   useEffect(() => {
-    settingKakaoMapWithStation();
-  }, []);
+    settingKakaoMapWithStation(selectStation.idx);
+  }, [houseInfo]);
 
-  /* 창 크기 변하는 것 */
+  /* FUNCTION: 선택한 역 주변의 집의 마커를 그림 */
+  const [houseMarkersState, setHouseMarkersState] = useState<any[]>([]);
+  const drawHouseMarker = (house: HouseInfoResponse[]) => {
+    if (house === undefined) {
+      return;
+    }
+
+    houseMarkersState.map((houseMarker: any) => {
+      houseMarker.setMap(null);
+    });
+
+    const houseMarkers: any[] = [];
+
+    house.forEach((info: HouseInfoResponse) => {
+      const handlerHouseInfo = async () => {
+        const type: string = searchParam.get('type')!.toLocaleUpperCase();
+        await handleHouseDetailChange(info.id, type);
+        handleHouseCardVisible();
+      };
+      const houseMarker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(info.position.lat, info.position.lng),
+        clickable: true,
+      });
+      kakao.maps.event.addListener(houseMarker, 'click', function () {
+        handlerHouseInfo();
+      });
+      houseMarkers.push(houseMarker);
+    });
+
+    houseMarkers.forEach((houseMarker: any) => {
+      houseMarker.setMap(map);
+    });
+
+    setHouseMarkersState(houseMarkers);
+  };
+
+  /* FUNCTION: 창 크기 변하는 것 */
   const [width, setWidth] = useState<number>(window.innerWidth);
-
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);

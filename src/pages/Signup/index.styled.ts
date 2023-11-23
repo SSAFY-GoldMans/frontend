@@ -45,7 +45,7 @@ const Input = styled.input`
 
   &:focus {
     outline: none;
-    border-bottom: 2.5px solid ${color.blue001};
+    border-bottom: 2.5px solid ${color.yellow001};
   }
 `;
 
@@ -62,7 +62,7 @@ const Button = styled.button`
   width: 360px;
   height: 52px;
 
-  background-color: ${color.blue001};
+  background-color: ${color.yellow001};
   color: ${color.white001};
 
   border-radius: 10px;

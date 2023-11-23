@@ -22,7 +22,7 @@ const StyledSelect = styled.select`
 
   &:hover,
   &:focus {
-    border-color: ${color.blue001};
+    border-color: ${color.yellow001};
   }
 `;
 

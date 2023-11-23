@@ -6,6 +6,7 @@ import { HouseDetailResponse } from '@/@types/apis/house';
 import { SnackbarOrigin } from '@mui/material/Snackbar';
 
 import * as S from './index.styled';
+import { IMAGE_URL } from '@/constants/image';
 
 interface State extends SnackbarOrigin {
   open: boolean;
@@ -40,11 +41,14 @@ function HouseInfo({ houseInfoHandler, houseDetail, agent }: Props) {
 
   console.log(houseDetail);
 
+  const getRandomImageUrl: () => string = () => {
+    return IMAGE_URL[(houseDetail.id % IMAGE_URL.length) - 1];
+  };
+
   return (
     <S.Container>
       <S.BackButton onClick={handleBack}>뒤로가기</S.BackButton>
-      {/* <S.Img src={houseDetail.img}></S.Img> */}
-      <S.Img src={'?'}></S.Img>
+      <S.Img src={getRandomImageUrl()}></S.Img>
       <S.Wrapper>
         <S.Header>건물정보</S.Header>
         <S.ColumnWrapper>

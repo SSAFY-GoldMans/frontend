@@ -4,12 +4,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SelectStationType, StationMapInfoType } from '@/@types/metro';
 import {
   HouseDetailRequest,
+  HouseDetailResponse,
   HouseInfoRequest,
   HouseInfoResponse,
 } from '@/@types/apis/house';
 import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
 
-import { requestHouseInfo } from '@/apis/request/house';
+import { requestHouseDetail, requestHouseInfo } from '@/apis/request/house';
 import { requestStationInfo } from '@/apis/request/metro';
 
 import { BROWSER_PATH } from '@/constants/path';
@@ -21,14 +22,6 @@ import MainRightSide from '@/components/MainRightSide';
 import Loading from '../Loading';
 
 import * as S from './index.styled';
-
-/* TODO: 추후 API로 삭제 */
-const station: StationMapInfoType = {
-  id: 1,
-  name: '역삼역',
-  lng: 127.036377,
-  lat: 37.500643,
-};
 
 function Main() {
   const { kakao } = window;
@@ -93,14 +86,12 @@ function Main() {
     await requestStationInfo(req)
       .then(res => {
         setStationInfo(res.data.body);
-        console.log(res.data.body);
       })
       .catch(err => {
         console.log(err);
       })
       .finally(() => {
         setLoading(false);
-        console.log(req);
       });
   };
 
@@ -113,6 +104,7 @@ function Main() {
       type: type.toLocaleUpperCase(),
     };
     fetchStationInfo(req);
+    changeSelectStation({ idx: 0, id: -1, name: req.name, time: `0분` });
   }, [type, building]);
 
   /* FUNCTION: 고정 필터 검색 기능 */
@@ -130,52 +122,20 @@ function Main() {
     fetchStationInfo(req);
   };
 
-  /* TODO: 지하철 API 완성시 연동하기 */
   /* STATE: 선택한 역의 정보, FUNCTION: 전달 받은 매개변수로 선택한 역의 정보 수정 */
   const [selectStation, setSelectStation] = useState<SelectStationType>({
-    id: 1,
-    name: '강남역',
-    time: '1분',
+    idx: 0,
+    id: -1,
+    name: '',
+    time: '0분',
   });
-  const changeSelectStation = ({ id, name, time }: SelectStationType) => {
+  const changeSelectStation = ({ idx, id, name, time }: SelectStationType) => {
     setSelectStation({
+      idx,
       id,
       name,
       time,
     });
-  };
-
-  /* TODO: 카카오 지하철 좌표 조회 */
-  type KakaoMetroMapResponse = {
-    id: number; // 지하철 Id
-    name: string; // 지하철 이름
-    lng: number;
-    lat: number;
-  };
-
-  /* TODO: 카카오 집 좌표 조회 */
-  type KakaoHouseMapRequest = {
-    buildingType: string;
-    rentType: string;
-    stationName: string;
-    price: {
-      max: number;
-      min: number;
-    };
-    rent: {
-      max: number;
-      min: number;
-    };
-    area: {
-      max: number;
-      min: number;
-    };
-  };
-  type KakaoHouseMapResponse = {
-    id: number; // 건물 Id
-    name: string; // 건물 이름
-    lng: number;
-    lat: number;
   };
 
   /* STATE: 집 목록 */
@@ -183,7 +143,7 @@ function Main() {
 
   /* API: 집 목록 조회 */
   const fetchHouseInfo = async (req: HouseInfoRequest) => {
-    if (req.buildingType === '') {
+    if (req.buildingType === '' || req.stationName === '') {
       return;
     }
 
@@ -194,9 +154,7 @@ function Main() {
       .catch(err => {
         console.log(err);
       })
-      .finally(() => {
-        console.log(req);
-      });
+      .finally(() => {});
   };
 
   /* FUNCTION: 집 목록 조회 */
@@ -221,15 +179,43 @@ function Main() {
     fetchHouseInfo(req);
   }, [time, building, rent, fee, area, selectStation]);
 
-  /* API: 매물 상세 정보 조회 */
-  const fetchHouseDetail = () => {};
-
-  /* TODO: 중개업자 정보 상세 조회 */
-
   /* FUNCTION: 최초 진입시 쿼리 파싱 진행 및 역 선택 */
   useEffect(() => {
     getQueryParams();
   }, []);
+
+  /* TODO: 중개업자 정보 상세 조회 */
+
+  /* FUNCTION: 집 상세 조회 */
+  /* STATE: 집 상세 보기 여부, FUNCTION: 집 상세 보기 토글 */
+  const [isHouseInfoVisible, setIsHouseInfoVisible] = useState<boolean>(false);
+  const handleHouseCardVisible = () => {
+    setIsHouseInfoVisible(!isHouseInfoVisible);
+  };
+
+  /* STATE: 집 상세 보기 요청, FUNCTION: 집 상세 보기 변수 수정 */
+  const [houseDetailReq, setHouseDetailReq] = useState<HouseDetailRequest>();
+  const handleHouseDetailChange = (id: number, type: string) => {
+    setHouseDetailReq({ id, type });
+  };
+
+  /* STATE: 집 상세 보기 */
+  const [houseDetail, setHouseDetail] = useState<HouseDetailResponse>();
+
+  /* API: 집 상세 정보 요청 */
+  const fetchHouseDetail = async (req: HouseDetailRequest) => {
+    if (req === undefined) {
+      return;
+    }
+    await requestHouseDetail(req)
+      .then(res => {
+        setHouseDetail(res.data.body);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
 
   /* FUNCTION: 데이터를 호출하고 있을 경우 로딩창을 보여줌 */
   if (loading) {
@@ -257,14 +243,29 @@ function Main() {
         handleQueryChange={handleQueryChange}
         handleTimeChange={handleTimeChange}
         goSearch={goSearch}
-        station={station}
+        stations={stationInfo}
+        selectStation={selectStation}
+        changeSelectStation={station => changeSelectStation(station)}
+        houseInfo={houseInfo}
+        handleHouseDetailChange={handleHouseDetailChange}
+        fetchHouseDetail={fetchHouseDetail}
+        handleHouseCardVisible={handleHouseCardVisible}
+        houseDetail={houseDetail!}
+        houseDetailReq={houseDetailReq!}
+        isHouseInfoVisible={isHouseInfoVisible}
       />
       <S.RightWrapper>
         <MainRightSide
           houseInfo={houseInfo}
           fromStation={selectStation.name}
-          toStation={station.name}
+          toStation={query}
           time={selectStation.time}
+          fetchHouseDetail={fetchHouseDetail}
+          handleHouseCardVisible={handleHouseCardVisible}
+          handleHouseDetailChange={handleHouseDetailChange}
+          houseDetail={houseDetail!}
+          houseDetailReq={houseDetailReq!}
+          isHouseInfoVisible={isHouseInfoVisible}
         />
       </S.RightWrapper>
     </S.Container>

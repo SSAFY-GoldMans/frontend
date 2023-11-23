@@ -52,7 +52,7 @@ const Input = styled.input`
   background-size: 18px 18px;
   background-position: 95% center;
   border-radius: 5px;
-  border: 1px solid ${color.blue001};
+  border: 1px solid ${color.yellow001};
   transition: all 250ms ease-in-out;
   backface-visibility: hidden;
   transform-style: preserve-3d;
@@ -126,7 +126,7 @@ const FilterHeader = styled.h1`
   margin: 8px 0;
 
   font-size: 20px;
-  color: ${color.blue001};
+  color: ${color.yellow001};
 `;
 
 const FilterCard = styled.div`
@@ -141,7 +141,7 @@ const MoneyInput = styled.input`
   margin: 8px 0;
 
   font-size: 20px;
-  color: ${color.blue001};
+  color: ${color.yellow001};
   border: 0;
 `;
 

@@ -5,6 +5,7 @@ import { HeaderAptType, HeaderOfficetelType } from '@/constants/header';
 import HeaderInfoBox from '../HeaderInfoBox';
 
 import * as S from './index.styled';
+import Logo from '../../../public/logo.png';
 
 function Header() {
   const navigate = useNavigate();
@@ -12,7 +13,9 @@ function Header() {
   return (
     <S.Container>
       <S.LogoWrapper>
-        <S.Logo onClick={() => navigate(BROWSER_PATH.BASE)}>철부지</S.Logo>
+        <S.Logo onClick={() => navigate(BROWSER_PATH.BASE)}>
+          <S.Img src={Logo} alt={'logo'} />
+        </S.Logo>
       </S.LogoWrapper>
       <S.BuildingWrapper>
         <HeaderInfoBox {...HeaderAptType} />

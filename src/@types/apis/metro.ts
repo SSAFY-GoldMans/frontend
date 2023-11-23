@@ -14,6 +14,7 @@ type StationInfoResponse = {
   price: string;
   lat: number;
   lng: number;
+  lines: number[];
 };
 
 export { StationInfoRequest, StationInfoResponse };

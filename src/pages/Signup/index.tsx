@@ -119,7 +119,7 @@ function Signup() {
               혹시 중개업자 이신가요?
             </S.Comment>
           ) : (
-            <S.Comment color={color.blue001 + 90}>
+            <S.Comment color={color.yellow001 + 90}>
               혹시 일반회원 이신가요?
             </S.Comment>
           )}
