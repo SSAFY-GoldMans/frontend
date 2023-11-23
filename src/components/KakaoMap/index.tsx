@@ -151,7 +151,6 @@ function KakaoMap({
 
     houseMarkers.map((houseMarker: any) => {
       houseMarker.setMap(map);
-      console.log(houseMarker);
     });
     setHouseMarkersState(houseMarkers);
   };
