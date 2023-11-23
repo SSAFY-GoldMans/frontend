@@ -23,6 +23,15 @@ const LogoWrapper = styled.div`
 
 const Logo = styled.h1`
   cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Img = styled.img`
+  width: 300px;
+  height: 50px;
 `;
 
 const BuildingWrapper = styled.div`
@@ -80,4 +89,5 @@ export {
   BuildingInfoComment,
   UserWrapper,
   AccountButton,
+  Img,
 };

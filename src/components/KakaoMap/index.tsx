@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { StationInfoResponse } from '@/@types/apis/metro';
 import MetroStationImg from '@/assets/metro.png';
-import { SelectStationType, StationMapInfoType } from '@/@types/metro';
+import { SelectStationType } from '@/@types/metro';
 import HouseFilter from '../HouseFilter';
 
 import * as S from './index.styled';
