@@ -93,14 +93,12 @@ function Main() {
     await requestStationInfo(req)
       .then(res => {
         setStationInfo(res.data.body);
-        console.log(res.data.body);
       })
       .catch(err => {
         console.log(err);
       })
       .finally(() => {
         setLoading(false);
-        console.log(req);
       });
   };
 
@@ -252,6 +250,7 @@ function Main() {
         handleTimeChange={handleTimeChange}
         goSearch={goSearch}
         station={station}
+        stations={stationInfo}
       />
       <S.RightWrapper>
         <MainRightSide
