@@ -18,14 +18,6 @@ import Loading from '../Loading';
 
 import * as S from './index.styled';
 
-/* TODO: 추후 API로 삭제 */
-const station: StationMapInfoType = {
-  id: 1,
-  name: '역삼역',
-  lng: 127.036377,
-  lat: 37.500643,
-};
-
 function Main() {
   const { kakao } = window;
   const [searchParam] = useSearchParams();

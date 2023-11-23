@@ -55,7 +55,9 @@ function KakaoMap({
     };
     map = await new kakao.maps.Map(container, options);
     /* FUNCTION: 지도 오른쪽에 줌 컨트롤이 표시되도록 지도에 컨트롤을 추가한다. */
-    var zoomControl = new kakao.maps.ZoomControl();
+    let mapTypeControl = new kakao.maps.MapTypeControl();
+    let zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
     map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
 
     map.setMaxLevel(6);
@@ -126,7 +128,6 @@ function KakaoMap({
       return;
     }
 
-    // TODO: 마커 삭제 기능
     houseMarkersState.map((houseMarker: any) => {
       houseMarker.setMap(null);
     });
