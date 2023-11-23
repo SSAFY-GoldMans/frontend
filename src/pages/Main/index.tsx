@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { SelectStationType, StationMapInfoType } from '@/@types/metro';
-import {
-  HouseDetailRequest,
-  HouseInfoRequest,
-  HouseInfoResponse,
-} from '@/@types/apis/house';
+import { HouseInfoRequest, HouseInfoResponse } from '@/@types/apis/house';
 import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
 
 import { requestHouseInfo } from '@/apis/request/house';
@@ -249,14 +245,14 @@ function Main() {
         handleQueryChange={handleQueryChange}
         handleTimeChange={handleTimeChange}
         goSearch={goSearch}
-        station={station}
         stations={stationInfo}
+        changeSelectStation={station => changeSelectStation(station)}
       />
       <S.RightWrapper>
         <MainRightSide
           houseInfo={houseInfo}
           fromStation={selectStation.name}
-          toStation={station.name}
+          toStation={query}
           time={selectStation.time}
         />
       </S.RightWrapper>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { StationMapInfoType } from '@/@types/metro';
+import { StationInfoResponse } from '@/@types/apis/metro';
+import MetroStationImg from '@/assets/metro.png';
+import { SelectStationType, StationMapInfoType } from '@/@types/metro';
 import HouseFilter from '../HouseFilter';
 
 import * as S from './index.styled';
 import { color } from '@/styles/colors';
-import MetroStationImg from '@/assets/metro.png';
-import { StationInfoResponse } from '@/@types/apis/metro';
 
 interface Props {
   kakao: any;
@@ -21,8 +21,8 @@ interface Props {
   handleTimeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   handleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   goSearch: () => void;
-  station: StationMapInfoType;
   stations: StationInfoResponse[];
+  changeSelectStation: ({ id, name, time }: SelectStationType) => void;
 }
 
 function KakaoMap({
@@ -38,8 +38,8 @@ function KakaoMap({
   handleQueryChange,
   handleTimeChange,
   goSearch,
-  station,
   stations,
+  changeSelectStation,
 }: Props) {
   /* 카카오 지도 API  */
   let map: any;
@@ -47,7 +47,7 @@ function KakaoMap({
   const settingKakaoMapWithStation = async () => {
     const container = document.getElementById('map');
     const options = {
-      center: new kakao.maps.LatLng(station.lat, station.lng),
+      center: new kakao.maps.LatLng(stations.at(0)?.lat, stations.at(0)?.lng),
       level: 4,
     };
     map = await new kakao.maps.Map(container, options);
@@ -57,7 +57,7 @@ function KakaoMap({
 
     map.setMaxLevel(6);
     let stationCircle = new kakao.maps.Circle({
-      center: new kakao.maps.LatLng(station.lat, station.lng),
+      center: new kakao.maps.LatLng(stations.at(0)?.lat, stations.at(0)?.lng),
       radius: 800,
       strokeWeight: 2,
       strokeColor: color.blue001,
@@ -67,10 +67,14 @@ function KakaoMap({
       fillOpacity: 0.7,
     });
     stationCircle.setMap(map);
-    drawStationMarker(stations);
+    drawStationMarker(stations, stationCircle);
   };
 
-  const drawStationMarker = async (stations: StationInfoResponse[]) => {
+  /* FUNCTION: 지하철 역의 마커를 그린다  */
+  const drawStationMarker = async (
+    stations: StationInfoResponse[],
+    stationCircle: any,
+  ) => {
     var markerImage = await new kakao.maps.MarkerImage(
       MetroStationImg,
       new kakao.maps.Size(33, 33),
@@ -83,15 +87,25 @@ function KakaoMap({
         image: markerImage,
       });
       kakao.maps.event.addListener(stationMarker, 'click', function () {
-        map.setLevel(4);
         map.panTo(markerPosition);
-        selectStationByMarker();
+        selectStationByMarker(station, stationCircle);
       });
       stationMarker.setMap(map);
     });
   };
 
-  const selectStationByMarker = () => {};
+  /* FUNCTION: 선택한 마커의 원 위치를 수정  */
+  const selectStationByMarker = (
+    station: StationInfoResponse,
+    stationCircle: any,
+  ) => {
+    stationCircle.setPosition(new kakao.maps.LatLng(station.lat, station.lng));
+    changeSelectStation({
+      id: station.id,
+      name: station.name,
+      time: station.time,
+    });
+  };
 
   useEffect(() => {
     settingKakaoMapWithStation();
