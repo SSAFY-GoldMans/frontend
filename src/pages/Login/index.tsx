@@ -6,6 +6,7 @@ import { BROWSER_PATH } from '@/constants/path';
 
 import { HouseAnimation } from '@/components/Animation';
 import * as S from './index.styled';
+import useAuth from '@/hooks/useAuth';
 
 function Login() {
   /* STATE: 사용자의 로그인 정보 */
@@ -14,6 +15,7 @@ function Login() {
     password: '',
   });
 
+  const { setAuth } = useAuth();
   /**
    * FUNCTION: 사용자 정보 수정 핸들러
    * @param e `Input`의 `onChange`
@@ -35,8 +37,11 @@ function Login() {
 
     requestLogin(info)
       .then(res => {
-        /* TODO: JWT 토큰 받은 후 저장 */
-        console.log(res.data);
+        const token = {
+          accessToken: res.data.body.accessToken,
+          refreshToken: res.data.body.refreshToken,
+        };
+        setAuth({ ...token });
         history.back();
       })
       .catch(error => {

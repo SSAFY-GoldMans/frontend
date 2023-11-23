@@ -34,4 +34,11 @@ const HeaderOfficetelType: HeaderInfoType = {
   ],
 };
 
-export { HeaderAptType, HeaderOfficetelType };
+const HeaderLoginType: HeaderInfoType = {
+  title: '나의 정보',
+  comment: '정보수정',
+  path: BROWSER_PATH.MY,
+  optionType: [],
+};
+
+export { HeaderAptType, HeaderOfficetelType, HeaderLoginType };
