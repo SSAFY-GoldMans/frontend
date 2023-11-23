@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { BUILDING, SALES } from '@/constants/building';
 import { BROWSER_PATH } from '@/constants/path';
 import { TimeOption } from '@/constants/filter';
 import SearchMapAnimation from '@/components/Animation/SearchMap';
@@ -32,8 +33,10 @@ function Landing() {
    */
   const goSearch = () => {
     let uri = BROWSER_PATH.HOME;
-    uri += `?time=${time}`;
-    uri += `&query=${query}`;
+    uri += `?query=${query}`;
+    uri += `&time=${time}`;
+    uri += `&building=${BUILDING.OFFIECTEL}`;
+    uri += `&type=${SALES.JEONSE}`;
     navigate(uri);
   };
 

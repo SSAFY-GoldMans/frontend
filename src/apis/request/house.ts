@@ -1,6 +1,11 @@
 import { axios } from '@/apis/axios';
 import { ApiResponse } from '@/@types/global';
-import { HouseInfoRequest, HouseInfoResponse } from '@/@types/apis/house';
+import {
+  HouseDetailRequest,
+  HouseDetailResponse,
+  HouseInfoRequest,
+  HouseInfoResponse,
+} from '@/@types/apis/house';
 import { API_PATH } from '@/constants/path';
 
 type HouseInfoArrayResponse = {
@@ -14,4 +19,11 @@ const requestHouseInfo = (request: HouseInfoRequest) => {
   );
 };
 
-export { requestHouseInfo, HouseInfoArrayResponse };
+const requestHouseDetail = (request: HouseDetailRequest) => {
+  return axios.post<ApiResponse<HouseDetailResponse>>(
+    API_PATH.HOUSE.DETAIL,
+    request,
+  );
+};
+
+export { requestHouseInfo, HouseInfoArrayResponse, requestHouseDetail };

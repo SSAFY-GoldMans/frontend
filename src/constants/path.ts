@@ -8,6 +8,7 @@ const API_PATH = {
   },
   HOUSE: {
     INFO: '/house',
+    DETAIL: '/house/detail',
   },
 };
 

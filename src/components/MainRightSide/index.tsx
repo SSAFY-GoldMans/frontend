@@ -1,14 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import HouseCard from '../HouseCard';
 import HouseInfo from '../HouseInfo';
-import { HouseInfoResponse } from '@/@types/apis/house';
+import {
+  HouseDetailRequest,
+  HouseDetailResponse,
+  HouseInfoResponse,
+} from '@/@types/apis/house';
 
 import * as S from './index.styled';
 
 /* TODO: 추후 API로 분리 */
 import { BuildingInfoType } from '@/@types/building';
 import { AgentInfoType } from '@/@types/agent';
+import { requestHouseDetail } from '@/apis/request/house';
+import Loading from '@/pages/Loading';
 
 /* TODO: 후추 API로 분리 */
 const info2: BuildingInfoType = {
@@ -44,6 +50,35 @@ function MainRightSide({ houseInfo, fromStation, toStation, time }: Props) {
     setIsHouseInfoVisible(!isHouseInfoVisible);
   };
 
+  /* STATE: 집 상세 보기 요청, FUNCTION: 집 상세 보기 변수 수정 */
+  const [houseDetailReq, setHouseDetailReq] = useState<HouseDetailRequest>();
+  const handleHouseDetailChange = (id: number, type: string) => {
+    setHouseDetailReq({ id, type });
+  };
+
+  /* STATE: 집 상세 보기 */
+  const [houseDetail, setHouseDetail] = useState<HouseDetailResponse>();
+
+  /* API: 집 상세 정보 요청 */
+  const fetchHouseDetail = async (req: HouseDetailRequest) => {
+    if (req === undefined) {
+      return;
+    }
+    await requestHouseDetail(req)
+      .then(res => {
+        setHouseDetail(res.data.body);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {});
+  };
+
+  /* FUNCTION: 집 상세 정보 보기 요청 값 변경 시 API 호출 */
+  useEffect(() => {
+    fetchHouseDetail(houseDetailReq!);
+  }, [houseDetailReq]);
+
   return (
     <S.Container>
       <S.HeaderWrapper>
@@ -55,10 +90,10 @@ function MainRightSide({ houseInfo, fromStation, toStation, time }: Props) {
         </S.HeaderComment>
       </S.HeaderWrapper>
       <S.HouseCardWrapper>
-        {isHouseInfoVisible ? (
+        {houseDetail !== undefined && isHouseInfoVisible ? (
           <HouseInfo
             houseInfoHandler={handleHouseCardVisible}
-            building={info2}
+            houseDetail={houseDetail}
             agent={info3}
           />
         ) : (
@@ -68,6 +103,7 @@ function MainRightSide({ houseInfo, fromStation, toStation, time }: Props) {
                 key={index}
                 info={info}
                 houseInfoHandler={handleHouseCardVisible}
+                handleHouseDetailChange={handleHouseDetailChange}
               />
             );
           })

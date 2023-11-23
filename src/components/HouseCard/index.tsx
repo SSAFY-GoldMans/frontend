@@ -1,18 +1,19 @@
-import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { HouseInfoResponse } from '@/@types/apis/house';
 import * as S from './index.styled';
 
 interface Props {
   info: HouseInfoResponse;
   houseInfoHandler: () => void;
+  handleHouseDetailChange: (id: number, type: string) => void;
 }
 
-function HouseCard({ info, houseInfoHandler }: Props) {
-  const navigate = useNavigate();
-
-  const handlerHouseInfo = () => {
+function HouseCard({ info, houseInfoHandler, handleHouseDetailChange }: Props) {
+  const [searchParam] = useSearchParams();
+  const handlerHouseInfo = async () => {
+    const type: string = searchParam.get('type')!.toLocaleUpperCase();
+    await handleHouseDetailChange(info.id, type);
     houseInfoHandler();
-    navigate(`?id=${info.id}`);
   };
 
   return (

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { SelectStationType, StationMapInfoType } from '@/@types/metro';
-import { HouseInfoRequest, HouseInfoResponse } from '@/@types/apis/house';
+import {
+  HouseDetailRequest,
+  HouseInfoRequest,
+  HouseInfoResponse,
+} from '@/@types/apis/house';
 import { StationInfoRequest, StationInfoResponse } from '@/@types/apis/metro';
 
 import { requestHouseInfo } from '@/apis/request/house';
@@ -81,12 +85,12 @@ function Main() {
 
   /* API: 역 정보 조회 */
   const [stationInfo, setStationInfo] = useState<StationInfoResponse[]>([]);
-  const fetchStationInfo = (req: StationInfoRequest) => {
+  const fetchStationInfo = async (req: StationInfoRequest) => {
     if (req.building === '' || req.type === '') {
       return;
     }
     setLoading(true);
-    requestStationInfo(req)
+    await requestStationInfo(req)
       .then(res => {
         setStationInfo(res.data.body);
         console.log(res.data.body);
@@ -178,12 +182,12 @@ function Main() {
   const [houseInfo, setHouseInfo] = useState<HouseInfoResponse[]>([]);
 
   /* API: 집 목록 조회 */
-  const fetchHouseInfo = (req: HouseInfoRequest) => {
+  const fetchHouseInfo = async (req: HouseInfoRequest) => {
     if (req.buildingType === '') {
       return;
     }
 
-    requestHouseInfo(req)
+    await requestHouseInfo(req)
       .then(res => {
         setHouseInfo(res.data.body.houseList);
       })
@@ -217,21 +221,9 @@ function Main() {
     fetchHouseInfo(req);
   }, [time, building, rent, fee, area, selectStation]);
 
-  /* TODO: 매물 상세 정보 조회 */
-  type HouseDetailRequest = {
-    id: number;
-    type: string;
-  };
+  /* API: 매물 상세 정보 조회 */
+  const fetchHouseDetail = () => {};
 
-  type HouseDetailResponse = {
-    id: number; // 매물 Id
-    img: string; // 건물 사진 (아무거나 보내셈)
-    name: string; // 건물 이름
-    price: string; // 매물 가격
-    area: string; // 전용 면적
-    floor: number; // 매물 층수
-    address: string; // 건물 주소
-  };
   /* TODO: 중개업자 정보 상세 조회 */
 
   /* FUNCTION: 최초 진입시 쿼리 파싱 진행 및 역 선택 */
