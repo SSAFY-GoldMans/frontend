@@ -19,7 +19,6 @@ function HeaderInfoBox({ title, path, comment, optionType }: HeaderInfoType) {
         <S.BuildingInfoHeader>{title}</S.BuildingInfoHeader>
         <S.BuildingInfoComment>{comment}</S.BuildingInfoComment>
       </S.BuildingInfoWrapper>
-      {/* 경로 Path */}
       <S.PathWrapper
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

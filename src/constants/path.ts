@@ -17,6 +17,7 @@ const BROWSER_PATH = {
   HOME: '/home',
   LOGIN: '/login',
   SIGNUP: '/signup',
+  MY: '/my',
 };
 
 export { API_PATH, BROWSER_PATH };

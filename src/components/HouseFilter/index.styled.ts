@@ -126,7 +126,7 @@ const FilterHeader = styled.h1`
   margin: 8px 0;
 
   font-size: 20px;
-  color: ${color.yellow001};
+  color: ${color.black001};
 `;
 
 const FilterCard = styled.div`

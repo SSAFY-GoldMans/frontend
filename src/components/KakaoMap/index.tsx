@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { StationInfoResponse } from '@/@types/apis/metro';
 import {
   HouseDetailRequest,
@@ -9,10 +9,8 @@ import {
 import MetroStationImg from '@/assets/metro.png';
 import { SelectStationType } from '@/@types/metro';
 import HouseFilter from '../HouseFilter';
-
 import * as S from './index.styled';
 import { color } from '@/styles/colors';
-import { useSearchParams } from 'react-router-dom';
 
 interface Props {
   kakao: any;
@@ -31,7 +29,6 @@ interface Props {
   selectStation: SelectStationType;
   changeSelectStation: ({ id, name, time }: SelectStationType) => void;
   houseInfo: HouseInfoResponse[];
-
   isHouseInfoVisible: boolean;
   handleHouseCardVisible: () => void;
   houseDetailReq: HouseDetailRequest;
@@ -60,8 +57,7 @@ function KakaoMap({
   handleHouseCardVisible,
   handleHouseDetailChange,
 }: Props) {
-  /* 카카오 지도 API  */
-  let map: any;
+  const mapRef = useRef<any>(null);
   const [searchParam] = useSearchParams();
 
   const settingKakaoMapWithStation = async (idx: number) => {
@@ -73,14 +69,20 @@ function KakaoMap({
       ),
       level: 4,
     };
-    map = await new kakao.maps.Map(container, options);
-    /* FUNCTION: 지도 오른쪽에 줌 컨트롤이 표시되도록 지도에 컨트롤을 추가한다. */
+    mapRef.current = await new kakao.maps.Map(container, options);
+
     let mapTypeControl = new kakao.maps.MapTypeControl();
     let zoomControl = new kakao.maps.ZoomControl();
-    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-    map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
+    mapRef.current.addControl(
+      mapTypeControl,
+      kakao.maps.ControlPosition.TOPRIGHT,
+    );
+    mapRef.current.addControl(
+      zoomControl,
+      kakao.maps.ControlPosition.BOTTOMRIGHT,
+    );
 
-    map.setMaxLevel(6);
+    mapRef.current.setMaxLevel(6);
     let stationCircle = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(
         stations.at(idx)?.lat,
@@ -94,12 +96,11 @@ function KakaoMap({
       fillColor: color.yellow001 + 20,
       fillOpacity: 0.7,
     });
-    stationCircle.setMap(map);
+    stationCircle.setMap(mapRef.current);
     drawStationMarker(stations, stationCircle);
     drawHouseMarker(houseInfo);
   };
 
-  /* FUNCTION: 지하철 역의 마커를 그린다  */
   const drawStationMarker = async (
     stations: StationInfoResponse[],
     stationCircle: any,
@@ -116,14 +117,13 @@ function KakaoMap({
         image: markerImage,
       });
       kakao.maps.event.addListener(stationMarker, 'click', function () {
-        map.panTo(markerPosition);
+        mapRef.current.panTo(markerPosition);
         selectStationByMarker(idx, station, stationCircle);
       });
-      stationMarker.setMap(map);
+      stationMarker.setMap(mapRef.current);
     });
   };
 
-  /* FUNCTION: 선택한 마커의 원 위치를 수정  */
   const selectStationByMarker = (
     idx: number,
     station: StationInfoResponse,
@@ -140,9 +140,12 @@ function KakaoMap({
 
   useEffect(() => {
     settingKakaoMapWithStation(selectStation.idx);
+  }, []);
+
+  useEffect(() => {
+    drawHouseMarker(houseInfo);
   }, [houseInfo]);
 
-  /* FUNCTION: 선택한 역 주변의 집의 마커를 그림 */
   const [houseMarkersState, setHouseMarkersState] = useState<any[]>([]);
   const drawHouseMarker = (house: HouseInfoResponse[]) => {
     if (house === undefined) {
@@ -172,13 +175,12 @@ function KakaoMap({
     });
 
     houseMarkers.forEach((houseMarker: any) => {
-      houseMarker.setMap(map);
+      houseMarker.setMap(mapRef.current);
     });
 
     setHouseMarkersState(houseMarkers);
   };
 
-  /* FUNCTION: 창 크기 변하는 것 */
   const [width, setWidth] = useState<number>(window.innerWidth);
   useEffect(() => {
     const handleResize = () => {
@@ -209,7 +211,7 @@ function KakaoMap({
         handleTimeChange={handleTimeChange}
         goSearch={goSearch}
       />
-      <S.Map width={width - 700} id="map"></S.Map>
+      <S.Map width={width - 700} ref={mapRef} id="map"></S.Map>
     </S.Container>
   );
 }

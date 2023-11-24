@@ -50,29 +50,66 @@ function HouseFilter({
       setFeeMessage('전체 금액');
     } else if (min === 0 && max !== 30) {
       if (max < 10) {
-        setFeeMessage(`${max * 1000}만원 이하`);
+        setFeeMessage(
+          type === SALES.JEONSE
+            ? `${max * 1000}만원 이하`
+            : `${max * 100}만원 이하`,
+        );
       } else {
-        setFeeMessage(`${(max * 1.0) / 10}억원 이하`);
+        setFeeMessage(
+          type === SALES.JEONSE
+            ? `${(max * 1.0) / 10}억원 이하`
+            : `${max * 100}만원 이하`,
+        );
       }
     } else if (min !== 0 && max === 30) {
       if (min < 10) {
-        setFeeMessage(`${min * 1000}만원 이상`);
+        setFeeMessage(
+          type === SALES.JEONSE
+            ? `${min * 1000}만원 이상`
+            : `${min * 100}만원 이상`,
+        );
       } else {
-        setFeeMessage(`${(min * 1.0) / 10}억원 이상`);
+        setFeeMessage(
+          type === SALES.JEONSE
+            ? `${(min * 1.0) / 10}억원 이상`
+            : `${min * 100}만원 이상`,
+        );
       }
     } else if (min === max) {
       if (min < 10) {
-        setFeeMessage(`${min * 1000}만원 이상`);
+        setFeeMessage(
+          type === SALES.JEONSE
+            ? `${min * 1000}만원 이상`
+            : `${min * 100}만원 이상`,
+        );
       } else {
-        setFeeMessage(`${(min * 1.0) / 10}억원 이상`);
+        setFeeMessage(
+          type === SALES.JEONSE
+            ? `${(min * 1.0) / 10}억원 이상`
+            : `${min * 100}만원 이상`,
+        );
       }
     } else {
       if (min < 10 && max < 10) {
+        setFeeMessage(
+          type === SALES.JEONSE
+            ? `${min * 1000}만원 - ${max * 1000}만원`
+            : `${min * 100}만원 - ${max * 100}만원`,
+        );
         setFeeMessage(`${min * 1000}만원 - ${max * 1000}만원`);
       } else if (min < 10) {
-        setFeeMessage(`${min * 1000}만원 - ${(max * 1.0) / 10}억원`);
+        setFeeMessage(
+          type === SALES.JEONSE
+            ? `${min * 1000}만원 - ${(max * 1.0) / 10}억원`
+            : `${min * 100}만원 - ${max * 100}만원`,
+        );
       } else {
-        setFeeMessage(`${(min * 1.0) / 10}억원 - ${(max * 1.0) / 10}억원`);
+        setFeeMessage(
+          type === SALES.JEONSE
+            ? `${(min * 1.0) / 10}억원 - ${(max * 1.0) / 10}억원`
+            : `${min * 100}만원 - ${max * 100}만원`,
+        );
       }
     }
   }, [fee]);
